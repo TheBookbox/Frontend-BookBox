@@ -11,8 +11,17 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+
+        azul: {
+          primario: 'rgb(11, 82, 153)',
+          medio: '#093765'
+        }
       },
+
+   
     },
   },
-  plugins: [],
+  plugins: [
+    require('daisyui'),
+  ],
 } satisfies Config;
