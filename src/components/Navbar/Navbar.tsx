@@ -5,7 +5,7 @@ export function Navbar(){
     const liClass = 'cursor-pointer hover:text-azul-medio'
     
     return (
-        <div className="flex items-center justify-between w-full h-[145px] border px-16 lg:justify-around">
+        <div className="flex items-center justify-between w-full h-[145px] border px-8 lg:justify-around">
             <div className="flex items-center gap-2">
                 <Image src={'/logo.png'} width={50} height={50} alt="logo-bookbox"/>
                 <p className="font-serif text-azul-primario text-2xl">BookBox</p>
