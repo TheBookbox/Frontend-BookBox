@@ -8,13 +8,17 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        serifDisplay: ['DM Serif Display', 'serif'], // Nome da fonte e fallback
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
 
         azul: {
           primario: 'rgb(11, 82, 153)',
-          medio: '#093765'
+          medio: '#093765',
+          grad: '#090f18'
         }
       },
 
