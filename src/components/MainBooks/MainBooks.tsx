@@ -3,9 +3,15 @@ import Link from "next/link";
 import Image from "next/image";
 
 
+interface Book {
+  link: string;
+  cover: string;
+  name: string;
+}
+
 interface MainBooksProps {
   title: string;
-  data: any[];
+  data: Book[];
   linkMore: string
 }
 
@@ -17,8 +23,9 @@ export function MainBooks(props: MainBooksProps) {
       </h2>
 
       <div className="flex flex-wrap justify-center mt-5 gap-4 ">
-        {props.data?.map((book) => (
+        {props.data?.map((book, i) => (
           <Link
+            key={i}
             href={book.link}
             className="w-[145px] md:w-[240px]"
           >
