@@ -5,6 +5,7 @@ import { MainBooks } from "@/components/MainBooks/MainBooks";
 import { Navbar } from "@/components/Navbar/Navbar";
 import {books, Genres} from '../data/MainData'
 import { Cta } from "@/components/CTA/Cta";
+import { Footer } from "@/components/Footer/Footer";
 
 export default function Home() {
   return (
@@ -29,6 +30,8 @@ export default function Home() {
             <Cta/>
           </div>
       </main>
+
+      <Footer/>
     </div>
   );
 }
