@@ -2,10 +2,10 @@ import { navMenuIcon, SearchIcon } from "@/utils/icons"
 import Image from "next/image"
 
 export function Navbar(){
-    const liClass = 'cursor-pointer hover:text-azul-medio'
+    const liClass = 'cursor-pointer hover:text-azul-medio hover:bg-gray-300 p-2 rounded-lg'
     
     return (
-        <div className="flex items-center justify-between w-full h-[105px] px-8 lg:justify-around md:h-[145px]">
+        <div className="flex items-center justify-between w-full h-[105px] px-8 lg:justify-around md:h-[145px] select-none">
             <div className="flex items-center gap-2">
                 <Image src={'/logo.png'} width={50} height={50} alt="logo-bookbox"/>
                 <p className="font-serif text-azul-primario text-2xl">BookBox</p>

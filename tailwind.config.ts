@@ -18,6 +18,7 @@ export default {
         azul: {
           primario: 'rgb(11, 82, 153)',
           medio: '#093765',
+          clarinho: '#AAD5FF',
           grad: '#090f18'
         }
       },
