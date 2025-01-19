@@ -4,6 +4,7 @@ import { Line } from "@/components/Line";
 import { MainBooks } from "@/components/MainBooks/MainBooks";
 import { Navbar } from "@/components/Navbar/Navbar";
 import {books, Genres} from '../data/MainData'
+import { Cta } from "@/components/CTA/Cta";
 
 export default function Home() {
   return (
@@ -22,8 +23,11 @@ export default function Home() {
           <Line />
           <MainBooks title={'Por gênero'} data={Genres} linkMore={''}/>
         </div>
+        <Line />
 
-        
+          <div>
+            <Cta/>
+          </div>
       </main>
     </div>
   );

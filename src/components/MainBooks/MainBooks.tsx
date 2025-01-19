@@ -20,7 +20,7 @@ export function MainBooks(props: MainBooksProps) {
         {props.data?.map((book) => (
           <Link
             href={book.link}
-            className="w-[145px] md:w-[280px]"
+            className="w-[145px] md:w-[240px]"
           >
             <Image
               className="transition-all duration-150 hover:scale-105 cursor-pointer "

@@ -21,7 +21,7 @@ export function Navbar(){
             </ul>
 
             <ul className={`flex items-center gap-3 md:hidden text-azul-primario`}>
-               <li className={`${liClass} text-3xl`}>{SearchIcon}</li>
+               <li className={`${liClass} text-2xl`}>{SearchIcon}</li>
 
                <div className="dropdown">
                    <div tabIndex={0} role="button" className={`${liClass} text-4xl`}>{navMenuIcon}</div>
