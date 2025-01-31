@@ -1,28 +1,39 @@
-import type { Metadata } from "next";
+'use client'
 
 import "./globals.css";
-
-
-export const metadata: Metadata = {
-  title: "BookBox",
-  description: "Your books in one place. Share reviews of your favorite books. Get recommendations on what to read. Follow your friends.",
-};
+import { Navbar } from "@/components/Navbar/Navbar";
+import { Footer } from "@/components/Footer/Footer";
+import { Provider, useSelector } from "react-redux";
+import store, { RootState } from "../../store";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+
   return (
-    <html lang="pt-br">
-      <head>
-        <link rel="shortcut icon" href="/logo.png" type="image/png" />
-      </head>
-      <body
-        className={`antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    
+      <html lang="pt-br">
+        <head>
+          <link rel="shortcut icon" href="/logo.png" type="image/png" />
+        </head>
+        <body
+          className={`antialiased`}
+        >
+           <Provider store={store}>
+          <Navbar />
+        
+         {children}
+          <Footer/>
+          </Provider>
+        </body>
+      </html>
+  
   );
 }

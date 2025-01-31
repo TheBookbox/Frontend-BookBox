@@ -1,16 +1,34 @@
-
+'use client'
 import { Hero } from "@/components/Hero/Hero";
 import { Line } from "@/components/Line";
 import { MainBooks } from "@/components/MainBooks/MainBooks";
-import { Navbar } from "@/components/Navbar/Navbar";
-import {books, Genres} from '../data/MainData'
 import { Cta } from "@/components/CTA/Cta";
-import { Footer } from "@/components/Footer/Footer";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+
+  const router = useRouter()
+
+  const{user:AuthUser, loading} = useSelector((state: RootState) => state.auth)
+  const{user} = useSelector((state: RootState) => state.user)
+
+  useEffect(()=>{
+      if(AuthUser){
+        router.push('/home')
+      }
+  },[])
+
+  if(loading){
+    return <p>Carregando...
+
+    </p>
+  }
+
   return (
     <div className="w-full bg-white">
-      <Navbar />
 
       <div>
         <Hero />
@@ -20,9 +38,9 @@ export default function Home() {
         <Line />
 
         <div className="mt-5">
-          <MainBooks title={'Brasileiros famosos'} data={books} linkMore={''}/>
+          <MainBooks title={'Brasileiros famosos'} data={[]} linkMore={!user ? '/popular' : '/register'}/>
           <Line />
-          <MainBooks title={'Por gênero'} data={Genres} linkMore={''}/>
+          <MainBooks title={'Por gênero'} data={[]} linkMore={!user ? '/popular' : '/register'}/>
         </div>
         <Line />
 
@@ -31,7 +49,7 @@ export default function Home() {
           </div>
       </main>
 
-      <Footer/>
+     
     </div>
   );
 }

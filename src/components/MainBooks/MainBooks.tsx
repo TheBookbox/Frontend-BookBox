@@ -1,12 +1,19 @@
+'use client'
+
 import Link from "next/link";
 
 import Image from "next/image";
 
-
 interface Book {
-  link: string;
-  cover: string;
-  name: string;
+  id: string;
+  volumeInfo: {
+    title: string;
+    authors: string[];
+    description?: string;
+    imageLinks?: {
+      thumbnail?: string;
+    };
+  };
 }
 
 interface MainBooksProps {
@@ -26,17 +33,20 @@ export function MainBooks(props: MainBooksProps) {
         {props.data?.map((book, i) => (
           <Link
             key={i}
-            href={book.link}
+            href={'#'}
             className="w-[145px] md:w-[240px]"
           >
-            <Image
-              className="transition-all duration-150 hover:scale-105 cursor-pointer "
-              src={book.cover}
-              width={143}
-              height={204}
-              alt={book.name}
-              layout="responsive"
-            />
+            {book.volumeInfo.imageLinks?.thumbnail && (
+              <Image
+                className="transition-all duration-150 hover:scale-105 cursor-pointer "
+                src={book.volumeInfo.imageLinks.thumbnail}
+                width={143}
+                height={204}
+                alt={book.volumeInfo.title}
+                layout="responsive"
+              />
+
+            )}
           </Link>
         ))}
       </div>

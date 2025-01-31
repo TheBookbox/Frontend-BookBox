@@ -2,6 +2,16 @@ import { FaLinkedin, FaSearch } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
 import { FaFacebook } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
+import { MdRateReview } from "react-icons/md";
+import { IoMdStar } from "react-icons/io";
+import { FaUserAlt } from "react-icons/fa";
+import { IoIosChatboxes } from "react-icons/io";
+import { FaArrowAltCircleDown } from "react-icons/fa";
+import { IoHeartOutline, IoHeartSharp  } from "react-icons/io5";
+
+
+
+
 
 export const SearchIcon = (
     <FaSearch />
@@ -22,3 +32,32 @@ export const XIcon = (
 export const Linkedin = (
     <FaLinkedin />
 )
+
+export const author = (
+    <FaUserAlt />
+)
+
+export const star = (
+    <IoMdStar />
+)
+
+export const reviewIcon = (
+    <MdRateReview/>
+)
+
+export const commentIcon = (
+    <IoIosChatboxes />
+)
+
+export const expand = (
+    <FaArrowAltCircleDown />
+)
+
+export const heartLike = (
+    <IoHeartOutline />
+)
+
+export const fullHeartLike = (
+    <IoHeartSharp />
+)
+

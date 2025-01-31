@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 
 export function Hero(){
@@ -19,15 +20,17 @@ export function Hero(){
                 <h2>Compartilhe com amigos.</h2>
                 <h2>Receba indicações.</h2>
 
-                <span className="
-                font-semibold mt-5  cursor-pointer active:bg-azul-medio
-                flex justify-center items-center font-sans w-[200px] h-7 rounded-sm text-sm bg-azul-primario border-none text-white
-                md:w-[300px]
-                md:h-10
-                md:text-base
-                md:mt-12
-                
-                ">Comece agora - é gratís</span>
+                <Link href={'/register'}>
+                    <span className="
+                    font-semibold mt-5  cursor-pointer active:bg-azul-medio
+                    flex justify-center items-center font-sans w-[200px] h-7 rounded-sm text-sm bg-azul-primario border-none text-white
+                    md:w-[300px]
+                    md:h-10
+                    md:text-base
+                    md:mt-12
+                    
+                    ">Comece agora - é gratís</span>
+                </Link>
             </div>
 
            
