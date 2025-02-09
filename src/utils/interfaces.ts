@@ -3,10 +3,13 @@ export interface User{
     name?:string | undefined
     email?: string | undefined
     password?: string | undefined
+    followers?: [],
+    following?: [],
 }
 
 
 export interface Review {
+    bookId: string,
     stars: number,
     userId: string,
     text: string,

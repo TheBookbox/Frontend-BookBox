@@ -5,27 +5,23 @@ import { MainBooks } from "@/components/MainBooks/MainBooks";
 import { Cta } from "@/components/CTA/Cta";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Loading } from "@/components/Loading";
+import { useGoogleBooks } from "@/hook/useGoogleBooks";
+import Genres from '@/data/MainData'
 
 export default function Home() {
 
-  const router = useRouter()
+  const{user, loading} = useSelector((state: RootState) => state.auth)
 
-  const{user:AuthUser, loading} = useSelector((state: RootState) => state.auth)
-  const{user} = useSelector((state: RootState) => state.user)
+  const {books: BestSeller = [], loading: BestSellerLoad} = useGoogleBooks('inauthor:Machado%de%Assis&langRestrict=pt&orderBy=relevance', 5) || {}
 
-  useEffect(()=>{
-      if(AuthUser){
-        router.push('/home')
-      }
-  },[])
 
-  if(loading){
-    return <p>Carregando...
 
-    </p>
+  if(loading || BestSellerLoad){
+    return <Loading />
   }
+  
 
   return (
     <div className="w-full bg-white">
@@ -38,9 +34,9 @@ export default function Home() {
         <Line />
 
         <div className="mt-5">
-          <MainBooks title={'Brasileiros famosos'} data={[]} linkMore={!user ? '/popular' : '/register'}/>
+          <MainBooks title={'Brasileiros famosos'} data={BestSeller} linkMore={!user ? '/popular' : '/register'}/>
           <Line />
-          <MainBooks title={'Por gênero'} data={[]} linkMore={!user ? '/popular' : '/register'}/>
+          <MainBooks title={'Por gênero'} data={Genres} linkMore={!user ? '/popular' : '/register'}/>
         </div>
         <Line />
 

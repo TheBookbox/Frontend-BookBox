@@ -12,6 +12,7 @@ export function Navbar() {
   const router = useRouter();
 
   const {user: profile, loading } = useSelector((state: RootState) => state.auth);
+
   const {user}: {user: User} = useSelector((state: RootState) => state.user)
 
   const navOpt = [
@@ -42,7 +43,7 @@ export function Navbar() {
 
   return (
     <div className="bg-white flex items-center justify-between w-full h-[105px] px-8 lg:justify-around md:h-[145px] select-none border-b">
-      <Link href={"/"}>
+      <Link href={user ? '/home' : '/'}>
         <span className="flex items-center gap-2">
           <Image
             src={"/logo.png"}

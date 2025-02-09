@@ -1,55 +1,61 @@
 
-export const books = [
-    {
-        name: 'Reinações De Narizinho',
-        cover: '/imgs/books/reinacoes-de-narizinho.png',
-        link: '',
-    },
 
-    {
-        name: '1822',
-        cover: '/imgs/books/1822.png',
-        link: '',
-    },
+ const Genres = [
+    {   
+        id: 1,
+        volumeInfo: {
+            title: 'Terror',
+            authors: [],
+            imageLinks: {
+                thumbnail: '/imgs/genres/horror.png'
+            }
 
-    {
-        name: 'Os Miseráveis',
-        cover: '/imgs/books/os-miseraveis.png',
-        link: '',
+        }
     },
+    {   
+        id: 2,
+        volumeInfo: {
+            title: 'Drama',
+            authors: [],
+            imageLinks: {
+                thumbnail: '/imgs/genres/drama.png'
+            }
 
-    {
-        name: 'O Pica Pau Amarelo',
-        cover: '/imgs/books/o-pica-pau-amarelo.png',
-        link: '',
+        }
     },
+    {   
+        id: 3,
+        volumeInfo: {
+            title: 'Romance',
+            authors: [],
+            imageLinks: {
+                thumbnail: '/imgs/genres/romance.png'
+            }
 
-    // {
-    //     name: 'Triste Fim de Policarpo Quaresma',
-    //     cover: '/imgs/books/triste-fim-de-policarpo-quaresma.png',
-    //     link: '',
-    // }
+        }
+    },
+    {   
+        id: 4,
+        volumeInfo: {
+            title: 'Ficção Científica',
+            authors: [],
+            imageLinks: {
+                thumbnail: '/imgs/genres/sci-fi.png'
+            }
+
+        }
+    },
+    {   
+        id: 5,
+        volumeInfo: {
+            title: 'Aventura',
+            authors: [],
+            imageLinks: {
+                thumbnail: '/imgs/genres/adventure.png'
+            }
+
+        }
+    },
 ]
 
-export const Genres = [
-    {
-        name: 'Terror',
-        cover: '/imgs/genres/horror.png',
-        link: ''
-    },
-    {
-        name: 'Drama',
-        cover: '/imgs/genres/drama.png',
-        link: ''
-    },
-    {
-        name: 'Romance',
-        cover: '/imgs/genres/romance.png',
-        link: ''
-    },
-    {
-        name: 'Ficção Científica',
-        cover: '/imgs/genres/sci-fi.png',
-        link: ''
-    },
-]
+export default Genres

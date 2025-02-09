@@ -4,22 +4,27 @@ import Cookies from "js-cookie";
 import { User } from "@/utils/interfaces";
 
 
-const userCookie = Cookies.get('user');
+let user: User | null = null;
 
-const user = userCookie ? JSON.parse(userCookie) : null;
+try {
+  const userCookie = Cookies.get('user');
+  user = userCookie ? JSON.parse(userCookie) : null;
+} catch (error) {
+  console.error("Erro ao interpretar o cookie do usuário", error);
+}
 
 interface AuthState {
-    user: User | null;
-    error: string | null; 
-    success: boolean;
-    loading: boolean;
+  user: User | null;
+  error: string | null;
+  success: boolean;
+  loading: boolean;
 }
 
 const initialState: AuthState = {
-    user: user ? user : null,
-    error: null,
-    success: false,
-    loading: false,
+  user,
+  error: null,
+  success: false,
+  loading: false,
 };
 
 

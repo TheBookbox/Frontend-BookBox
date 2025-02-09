@@ -3,11 +3,9 @@
 import "./globals.css";
 import { Navbar } from "@/components/Navbar/Navbar";
 import { Footer } from "@/components/Footer/Footer";
-import { Provider, useSelector } from "react-redux";
-import store, { RootState } from "../../store";
-import Cookies from "js-cookie";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { Provider } from "react-redux";
+import store from "../../store";
+
 
 export default function RootLayout({
   children,
@@ -15,8 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-
-
+  
   return (
     
       <html lang="pt-br">
@@ -28,7 +25,8 @@ export default function RootLayout({
         >
            <Provider store={store}>
           <Navbar />
-        
+          
+
          {children}
           <Footer/>
           </Provider>
