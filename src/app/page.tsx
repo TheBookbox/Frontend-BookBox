@@ -9,12 +9,22 @@ import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
 import { useGoogleBooks } from "@/hook/useGoogleBooks";
 import Genres from '@/data/MainData'
+import Cookies from "js-cookie";
 
 export default function Home() {
 
   const{user, loading} = useSelector((state: RootState) => state.auth)
 
   const {books: BestSeller = [], loading: BestSellerLoad} = useGoogleBooks('inauthor:Machado%de%Assis&langRestrict=pt&orderBy=relevance', 5) || {}
+
+
+  const router = useRouter()
+  const cookies = Cookies.get('user')
+  const userCookies = cookies && JSON.parse(cookies)
+
+  if(userCookies){
+    router.push('/home')
+  }
 
 
 

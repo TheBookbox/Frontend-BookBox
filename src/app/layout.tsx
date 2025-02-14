@@ -5,6 +5,8 @@ import { Navbar } from "@/components/Navbar/Navbar";
 import { Footer } from "@/components/Footer/Footer";
 import { Provider } from "react-redux";
 import store from "../../store";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 
 export default function RootLayout({
@@ -12,6 +14,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+ 
+  
+  
+  
+  
 
   
   return (

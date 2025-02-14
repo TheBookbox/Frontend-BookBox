@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import Image from "next/image";
 
-interface Book {
+export interface Book {
   id: string;
   volumeInfo: {
     title: string;

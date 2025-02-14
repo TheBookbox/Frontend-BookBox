@@ -59,3 +59,52 @@ export const useGoogleBooks = (query: string, maxResults = 10) => {
       return {books, loading, error}
 
 }
+
+export const useBook = (id: string | string[] | undefined) => {
+    const[loading, setLoading] = useState(false)
+    const[book, setBook] = useState<any>([])
+    const[error, setError] = useState<string | null>(null)
+
+    if(!id){
+      return
+    }
+
+    
+    useEffect(()=>{
+      setLoading(true);
+      setError(null);
+
+      const fetchBook = async() => {
+
+        try {
+          setLoading(true)
+          setError(null)
+    
+        
+          const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`)
+          
+          const response = await res.json()
+    
+          setBook([response])
+    
+    
+        } catch (error) {
+          setError(error instanceof Error ? error.message : "Erro desconhecido")
+        } finally {
+          setLoading(false)
+        }
+
+
+      }
+
+      fetchBook()
+    },[id])
+
+
+
+    return {loading, book, error}
+
+ 
+
+    
+}
