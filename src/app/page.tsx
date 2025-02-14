@@ -10,25 +10,35 @@ import { Loading } from "@/components/Loading";
 import { useGoogleBooks } from "@/hook/useGoogleBooks";
 import Genres from '@/data/MainData'
 import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 export default function Home() {
 
   const{user, loading} = useSelector((state: RootState) => state.auth)
 
+  const router = useRouter()
+
+
   const {books: BestSeller = [], loading: BestSellerLoad} = useGoogleBooks('inauthor:Machado%de%Assis&langRestrict=pt&orderBy=relevance', 5) || {}
 
 
-  const router = useRouter()
-  const cookies = Cookies.get('user')
-  const userCookies = cookies && JSON.parse(cookies)
+  const [checkingAuth, setCheckingAuth] = useState(true)
 
-  if(userCookies){
-    router.push('/home')
-  }
+  useEffect(() => {
+    const cookies = Cookies.get('user')
+    const userCookies = cookies ? JSON.parse(cookies) : null
+
+    if (userCookies) {
+      router.push('/home')
+    } else {
+      setCheckingAuth(false)
+    }
+  }, [router])
 
 
+ 
 
-  if(loading || BestSellerLoad){
+  if(loading || BestSellerLoad || checkingAuth){
     return <Loading />
   }
   

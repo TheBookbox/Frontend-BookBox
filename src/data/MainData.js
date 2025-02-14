@@ -2,7 +2,7 @@
 
  const Genres = [
     {   
-        id: 1,
+        id: '1',
         volumeInfo: {
             title: 'Terror',
             authors: [],
@@ -13,7 +13,7 @@
         }
     },
     {   
-        id: 2,
+        id: "2",
         volumeInfo: {
             title: 'Drama',
             authors: [],
@@ -24,7 +24,7 @@
         }
     },
     {   
-        id: 3,
+        id: "3",
         volumeInfo: {
             title: 'Romance',
             authors: [],
@@ -35,7 +35,7 @@
         }
     },
     {   
-        id: 4,
+        id: "4",
         volumeInfo: {
             title: 'Ficção Científica',
             authors: [],
@@ -46,7 +46,7 @@
         }
     },
     {   
-        id: 5,
+        id: "5",
         volumeInfo: {
             title: 'Aventura',
             authors: [],
