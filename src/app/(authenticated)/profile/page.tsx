@@ -31,7 +31,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center pt-16 gap-4 bg-white">
+    <div className="flex flex-col items-center justify-center pt-16 gap-4 bg-white h-full">
       <div className="flex justify-center items-center w-24 h-24 bg-azul-grad rounded-full">
         <p className="text-azul-clarinho text-2xl">
           {user.name && user.name[0]}

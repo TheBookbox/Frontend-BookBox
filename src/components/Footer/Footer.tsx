@@ -19,7 +19,7 @@ const social = [
 
 export function Footer(){
     return (
-        <footer className="flex justify-center items-center gap-10 flex-col p-10 ">
+        <footer className="z-10 flex justify-center items-center gap-10 flex-col p-10">
             <div className="flex flex-col gap-5 md:flex-row">
                 <div className="flex justify-around items-center gap-5">
                     {footerLinks.map((link, i) => (

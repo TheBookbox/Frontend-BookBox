@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import store from "../../store";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { Line } from "@/components/Line";
 
 
 export default function RootLayout({
@@ -36,6 +37,8 @@ export default function RootLayout({
           
 
          {children}
+
+         <Line/>
           <Footer/>
           </Provider>
         </body>

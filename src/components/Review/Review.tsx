@@ -22,8 +22,10 @@ export default function ReviewComponent(props: ReviewProps) {
     (state: RootState) => state.user
   );
 
+  if(props.data.length == 0) return <p className="mb-10">Ainda não há publicações.</p>
+
   return (
-    <div className="flex flex-col items-center gap-4 pb-10 ">
+    <div className="flex flex-col items-center gap-4 pb-10 max-w-[550px]">
       {props.data.map((review: Review, i) => (
         <div
           key={i}
