@@ -7,6 +7,10 @@ export interface User{
     following?: [],
 }
 
+interface Comment {
+  userName: string;
+  text: string;
+}
 
 export interface Review {
     bookId: string,
@@ -16,7 +20,7 @@ export interface Review {
     bookName: string,
     thumbnail: string,
     likes: string[],
-    comments: string[],
+    comments: Comment[],
     userName: string,
     _id: string,
     createdAt: string,

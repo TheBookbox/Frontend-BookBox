@@ -4,7 +4,6 @@ import Image from "next/image"
 import { RootState } from "../../../store"
 import { useSelector } from "react-redux"
 import { Alert } from "../Alert"
-import { useEffect } from "react"
 
 interface FormProps {
     mode: 'login' | 'register'

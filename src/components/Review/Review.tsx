@@ -1,36 +1,61 @@
 import {
   author,
   commentIcon,
+  editIcon,
   expand,
   fullHeartLike,
   heartLike,
   linkBook,
   reviewIcon,
   star,
+  trashIcon,
 } from "@/utils/icons";
 import { Review, User } from "@/utils/interfaces";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
 import Link from "next/link";
+import { deleteReview } from "@/slices/reviewSlice";
+import { Alert } from "../Alert";
 
 interface ReviewProps {
   data: any[];
 }
 
+
 export default function ReviewComponent(props: ReviewProps) {
+
+  const dispatch = useDispatch<AppDispatch>()
+
+
   const { user }: { user: User } = useSelector(
     (state: RootState) => state.user
   );
 
-  if(props.data.length == 0) return <p className="mb-10">Ainda não há publicações.</p>
+  const {message} = useSelector((state: RootState) => state.review) 
+
+  if (props.data.length == 0)
+    return <p className="mb-10">Ainda não há publicações.</p>;
+
+
+  function handleDelete(id: string){
+    dispatch(deleteReview(id))
+  }
 
   return (
     <div className="flex flex-col items-center gap-4 pb-10 max-w-[550px]">
+      {message && <Alert msg={message} type="alert-success"/>}
       {props.data.map((review: Review, i) => (
         <div
           key={i}
           className="card bg-white w-[90%] shadow-xl p-3 font-serifDisplay text-black"
         >
+          {user._id == review.userId && (
+            <div className="flex justify-between gap-2 text-2xl my-4">
+            <p onClick={()=>handleDelete(review._id)} className="text-red-600 cursor-pointer hover:scale-105">{trashIcon}</p>
+            <p className="text-azul-primario cursor-pointer hover:scale-105">{editIcon}</p>
+          </div>
+          )}
+          
           <div className="text-end">
             {new Date().setHours(0, 0, 0, 0) ===
             new Date(review.createdAt).setHours(0, 0, 0, 0)
@@ -47,8 +72,9 @@ export default function ReviewComponent(props: ReviewProps) {
               className="text-azul-primario"
             >
               <div className="inline text-azul-medio font-semibold">
-                <p className="flex gap-2">{review.bookName} {linkBook}</p> 
-                
+                <p className="flex gap-2">
+                  {review.bookName} {linkBook}
+                </p>
               </div>
             </Link>
             <p className="flex items-center gap-2">
@@ -68,7 +94,7 @@ export default function ReviewComponent(props: ReviewProps) {
           </figure>
 
           <div className="flex items-center text-xl mt-10 gap-3">
-            {!review.likes.includes(user._id) ? (
+            {user._id && !review.likes.includes(user._id) ? (
               <p className="text-4xl cursor-pointer">{heartLike}</p>
             ) : (
               <p className="text-4xl">{fullHeartLike}</p>
@@ -95,7 +121,7 @@ export default function ReviewComponent(props: ReviewProps) {
                 <p className="pt-2">Seja o primeiro a comentar!</p>
               ) : (
                 <div>
-                  {review.comments.map((comment, i) => (
+                  {review.comments && review.comments.map((comment, i) => (
                     <div
                       key={i}
                       className="flex flex-col mt-5 border-b border-black pb-4"

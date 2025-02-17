@@ -1,3 +1,5 @@
+'use client'
+
 import { navMenuIcon, SearchIcon } from "@/utils/icons";
 import Image from "next/image";
 import Link from "next/link";

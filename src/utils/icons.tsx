@@ -10,8 +10,16 @@ import { FaArrowAltCircleDown } from "react-icons/fa";
 import { IoHeartOutline, IoHeartSharp  } from "react-icons/io5";
 import { FaUpRightAndDownLeftFromCenter } from "react-icons/fa6";
 import { GrReturn } from "react-icons/gr";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { MdEdit } from "react-icons/md";
 
+export const editIcon = (
+    <MdEdit/>
+)
 
+export const trashIcon = (
+    <FaRegTrashCan/>
+)
 
 export const SearchIcon = (
     <FaSearch />

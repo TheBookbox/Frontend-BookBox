@@ -1,19 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import reviewService from "@/services/reviewService";
-
+import { Review } from "@/utils/interfaces";
 
 const initialState = {
-    reviews: [],
+    reviews: [] as Review[],
     error: false,
     success: false,
     loading: false,
     message: null
-
 }
 
-
-export const getAllReviews = createAsyncThunk<never[], void, {state: RootState}>('review/getAll', async(_,thunkAPI) => {
+export const getAllReviews = createAsyncThunk<Review[], void, {state: RootState}>('review/getAll', async(_,thunkAPI) => {
 
     const token = thunkAPI.getState().auth.user.token
 
@@ -26,6 +24,18 @@ export const getUserReview = createAsyncThunk('review/getUserReview', async(user
     const token = thunkApi.getState().auth.user.token
 
     const data = await reviewService.getUserReviews(userId, token)
+
+    return data
+})
+
+export const deleteReview = createAsyncThunk('review/delete', async(id: string, thunkApi) => {
+    const token = thunkApi.getState().auth.user.token
+
+    const data = await reviewService.deleteReview(id, token)
+
+    if(data.error){
+        return thunkApi.rejectWithValue(data.error[0])
+    }
 
     return data
 })
@@ -79,6 +89,23 @@ const reviewSlice = createSlice({
             state.error = false
             state.reviews = action.payload
         })
+
+        .addCase(deleteReview.pending, (state) => {
+            state.loading = true
+            state.error = false
+            
+        })
+
+        .addCase(deleteReview.fulfilled, (state, action) => {
+            state.loading = false
+            state.error = false
+            state.reviews = state.reviews.filter((review: Review) => {
+                return review._id !== action.payload.id 
+            
+            })
+        })
+
+
 
 
         // .addCase(likeReview.fulfilled, (state, action) => {
