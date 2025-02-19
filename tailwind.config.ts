@@ -14,6 +14,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        modalBg: '#00000070',
 
         azul: {
           primario: 'rgb(11, 82, 153)',

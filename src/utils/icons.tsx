@@ -12,6 +12,12 @@ import { FaUpRightAndDownLeftFromCenter } from "react-icons/fa6";
 import { GrReturn } from "react-icons/gr";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
+import { SlOptions } from "react-icons/sl";
+
+
+export const ReviewOptionsIcon = (
+    <SlOptions/>
+)
 
 export const editIcon = (
     <MdEdit/>

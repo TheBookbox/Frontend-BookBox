@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { getAllReviews } from "@/slices/reviewSlice";
 
 import ReviewComponent from "@/components/Review/Review";
-import { Alert } from "@/components/Alert";
+import { ConfirmModal } from "@/components/ConfirmModal/ConfirmModal";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,11 +21,10 @@ export default function Home() {
     
   }, []);
 
+
   return (
     <div className="flex justify-center pt-4 bg-white">
-
-      
-
+       
       {reviews.length == 0 ? (
         <h2>Nenhuma review atualmente.</h2>
       ) : (

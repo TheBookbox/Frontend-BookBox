@@ -33,7 +33,7 @@ export function MainBooks(props: MainBooksProps) {
         {props.data?.map((book, i) => (
           <Link
             key={i}
-            href={'#'}
+            href={`/book/${book.id}`}
             className="w-[145px] md:w-[240px]"
           >
             {book.volumeInfo.imageLinks?.thumbnail && (

@@ -49,7 +49,7 @@ export default function BookDetails() {
                 </p>
                 <p>{book.volumeInfo.authors}</p>
 
-                <p className="mt-5">{book.volumeInfo.description}</p>
+                <p className="mt-5" dangerouslySetInnerHTML={{ __html: book.volumeInfo.description || '' }}></p>
               </div>
             </div>
           </div>
