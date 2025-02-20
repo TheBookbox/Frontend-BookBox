@@ -28,7 +28,9 @@ export function ConfirmModal(props: ConfirmModal){
 
     return (
         <div onClick={()=>props.setVisible(false)} className={`z-10 ${props.showModal ? 'fixed' : 'hidden'} w-full h-full top-0 bg-modalBg text-black`}>
-            <div className="flex flex-col justify-evenly fixed bottom-0 bg-white w-full h-[320px] opacity-100 rounded-t-xl p-5">
+            <div className="flex flex-col justify-evenly fixed bottom-0 bg-white w-full h-[320px] opacity-100 rounded-t-xl p-5 transition-all duration-150
+            
+            md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-1/2 md:rounded-lg md:max-w-[550px]">
                 <div>
                     <h1 className="text-2xl font-bold">{props.title}</h1>
                     <p className="">{props.description}</p>

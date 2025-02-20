@@ -5,7 +5,7 @@ import { FaSquareXTwitter } from "react-icons/fa6";
 import { MdRateReview } from "react-icons/md";
 import { IoMdStar } from "react-icons/io";
 import { FaUserAlt } from "react-icons/fa";
-import { IoIosChatboxes } from "react-icons/io";
+import { FaRegComment } from "react-icons/fa";
 import { FaArrowAltCircleDown } from "react-icons/fa";
 import { IoHeartOutline, IoHeartSharp  } from "react-icons/io5";
 import { FaUpRightAndDownLeftFromCenter } from "react-icons/fa6";
@@ -13,6 +13,12 @@ import { GrReturn } from "react-icons/gr";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
 import { SlOptions } from "react-icons/sl";
+import { IoShareSocialOutline } from "react-icons/io5";
+
+
+export const shareIcon = (
+<IoShareSocialOutline />
+)
 
 
 export const ReviewOptionsIcon = (
@@ -60,7 +66,7 @@ export const reviewIcon = (
 )
 
 export const commentIcon = (
-    <IoIosChatboxes />
+    <FaRegComment />
 )
 
 export const expand = (

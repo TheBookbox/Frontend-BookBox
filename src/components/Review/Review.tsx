@@ -8,6 +8,7 @@ import {
   linkBook,
   reviewIcon,
   ReviewOptionsIcon,
+e  shareIcon,
   star,
   trashIcon,
 } from "@/utils/icons";
@@ -54,17 +55,17 @@ export default function ReviewComponent(props: ReviewProps) {
   }
 
   return (
-    <div>
-        <ConfirmModal
-          go="Excluir"
-          cancel="Cancelar"
-          setVisible={()=>setConfirmModal(false)}
-          showModal={confirmModal}
-          title="Confirme a exclusão."
-          description="Essa ação é irreversível"
-          confirm={confirm}
-        />
-      <div className="flex flex-col items-center gap-4 pb-10 max-w-[550px]">
+    <div className="w-full">
+      <ConfirmModal
+        go="Excluir"
+        cancel="Cancelar"
+        setVisible={() => setConfirmModal(false)}
+        showModal={confirmModal}
+        title="Confirme a exclusão."
+        description="Essa ação é irreversível"
+        confirm={confirm}
+      />
+      <div className="flex flex-col items-center gap-4 pb-10">
         {message && (
           <Alert
             msg={message}
@@ -74,46 +75,49 @@ export default function ReviewComponent(props: ReviewProps) {
         {props.data.map((review: Review, i) => (
           <div
             key={i}
-            className="card bg-white w-[90%] shadow-xl p-3 font-serifDisplay text-black"
+            className="flex card bg-white w-full shadow-xl font-serifDisplay text-black p-5 rounded-none max-w-[530px] h-auto"
           >
             {user._id == review.userId && (
-              <div className="dropdown w-5">
+              <div className="self-end dropdown w-5">
                 <div
                   tabIndex={0}
                   role="button"
-                  className="btn "
+                  className=""
                 >
                   {ReviewOptionsIcon}
                 </div>
                 <ul
                   tabIndex={0}
-                  className="flex flex-col items-center gap-3 dropdown-content bg-azul-medio px-5 py-5 rounded-b-md shadow-lg"
+                  className="flex flex-col items-center gap-3 dropdown-content bg-white px-5 py-5 rounded-md shadow-lg font-semibold right-9"
                 >
                   <p
                     onClick={() => handleDelete(review._id)}
-                    className="flex items-center gap-2 text-red-400 cursor-pointer hover:scale-105 px-5 "
+                    className="flex items-center gap-2 cursor-pointer hover:scale-105 px-5 text-red-500"
                   >
                     {trashIcon} Excluir
                   </p>
-                  <p className="flex items-center gap-2 text-azul-clarinho cursor-pointer hover:scale-105">
+                  <p className="flex items-center gap-2  cursor-pointer hover:scale-105 text-black">
                     {editIcon} Editar
                   </p>
                 </ul>
               </div>
             )}
 
-
-            <div className="text-end">
-              {new Date().setHours(0, 0, 0, 0) ===
-              new Date(review.createdAt).setHours(0, 0, 0, 0)
-                ? "Hoje"
-                : new Date(review.createdAt).toLocaleDateString("pt-BR")}
-            </div>
-
-
             <div className="card-body p-5 gap-5">
-              <h2 className="card-title">
-                <span className="text-3xl ">{author}</span> {review.userName}
+              <h2 className="flex card-title justify-between">
+                <span className="flex items-center gap-2">
+                  <span className="flex justify-center items-center text-xl bg-azul-medio w-10 h-10 rounded-full text-white">
+                    {review.userName[0]}
+                  </span>
+                  {review.userName} 
+                </span> 
+
+                <div className="text-end font-normal">
+                  {new Date().setHours(0, 0, 0, 0) ===
+                  new Date(review.createdAt).setHours(0, 0, 0, 0)
+                    ? "Hoje"
+                    : new Date(review.createdAt).toLocaleDateString("pt-BR")}
+                </div>
               </h2>
               <Link
                 href={`/book/${review.bookId}`}
@@ -129,8 +133,8 @@ export default function ReviewComponent(props: ReviewProps) {
                 <span className="text-yellow-600">{star}</span>
                 {review.stars}/5
               </p>
-              <p className="flex font-sans gap-4">
-                <span>{reviewIcon}</span>
+              <p className="flex font-sans gap-4 max-w-[300px] min-w-full">
+                <span className="self-center">{reviewIcon}</span>
                 {review.text}
               </p>
             </div>
@@ -140,43 +144,26 @@ export default function ReviewComponent(props: ReviewProps) {
                 alt={review.text}
               />
             </figure>
-            <div className="flex items-center text-xl mt-10 gap-3">
-              {user._id && !review.likes.includes(user._id) ? (
-                <p className="text-4xl cursor-pointer">{heartLike}</p>
-              ) : (
-                <p className="text-4xl">{fullHeartLike}</p>
-              )}
-              <p>{review.likes.length}</p>
-            </div>
-            <div
-              tabIndex={0}
-              className="collapse bg-azul-medio  text-white mt-3"
-            >
-              <div className="collapse-title text-xl font-medium">
-                <div className="flex justify-between items-center ">
-                  <p className="flex items-center gap-2">
-                    {commentIcon} {review.comments.length}
-                  </p>
-                  <p>{expand}</p>
-                </div>
-              </div>
-              <div className="collapse-content w-full bg-white border text-black">
-                {review.comments.length == 0 ? (
-                  <p className="pt-2">Seja o primeiro a comentar!</p>
+            <div className="flex items-center mt-10 gap-5">
+              <div className="flex items-center text-xl gap-1">
+                {user._id && !review.likes.includes(user._id) ? (
+                  <p className="text-4xl cursor-pointer">{heartLike}</p>
                 ) : (
-                  <div>
-                    {review.comments &&
-                      review.comments.map((comment, i) => (
-                        <div
-                          key={i}
-                          className="flex flex-col mt-5 border-b border-black pb-4"
-                        >
-                          <p className="font-semibold">{comment.userName}:</p>
-                          <p>{comment.text}</p>
-                        </div>
-                      ))}
-                  </div>
+                  <p className="text-4xl">{fullHeartLike}</p>
                 )}
+                <p>{review.likes.length}</p>
+              </div>
+              <div className="flex items-center text-xl gap-1">
+                <p className="text-3xl cursor-pointer text-azul-medio">
+                  {commentIcon}
+                </p>
+                <p>{review.comments.length}</p>
+              </div>
+
+              <div className="flex items-center text-xl gap-1">
+                <p className="text-3xl cursor-pointer text-azul-medio">
+                  {shareIcon}
+                </p>
               </div>
             </div>
           </div>
