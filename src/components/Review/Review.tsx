@@ -1,14 +1,12 @@
 import {
-  author,
   commentIcon,
   editIcon,
-  expand,
   fullHeartLike,
   heartLike,
   linkBook,
   reviewIcon,
   ReviewOptionsIcon,
-e  shareIcon,
+  shareIcon,
   star,
   trashIcon,
 } from "@/utils/icons";
@@ -16,10 +14,12 @@ import { Review, User } from "@/utils/interfaces";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
 import Link from "next/link";
-import { deleteReview } from "@/slices/reviewSlice";
+import { deleteReview, reset } from "@/slices/reviewSlice";
 import { Alert } from "../Alert";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 import { useState } from "react";
+import { EditReviewModal } from "../EditReviewModal/EditReviewModal";
+import { setTimeout } from "timers";
 
 interface ReviewProps {
   data: any[];
@@ -29,16 +29,16 @@ export default function ReviewComponent(props: ReviewProps) {
   const [confirmModal, setConfirmModal] = useState<boolean>(false);
   const [selectReviewId, setSelectReviewId] = useState<string | null>(null);
 
+  const [EditModal, setEditModal] = useState<boolean>(false);
+  const [IdEdit, setIdEdit] = useState<string | null>(null);
+
   const dispatch = useDispatch<AppDispatch>();
 
   const { user }: { user: User } = useSelector(
     (state: RootState) => state.user
   );
 
-  const { message } = useSelector((state: RootState) => state.review);
-
-  if (props.data.length == 0)
-    return <p className="mb-10">Ainda não há publicações.</p>;
+  const {error, success } = useSelector((state: RootState) => state.review);
 
   async function handleDelete(id: string) {
     setSelectReviewId(id);
@@ -54,8 +54,27 @@ export default function ReviewComponent(props: ReviewProps) {
     setSelectReviewId(null);
   }
 
+  function editModal(id: string){
+      setIdEdit(id)
+
+      setEditModal(true)
+
+  }
+
+
+
+
+
+
+  if (props.data.length == 0)
+    return <p className="mb-10">Ainda não há publicações.</p>;
+
   return (
     <div className="w-full">
+
+      <EditReviewModal showModal={EditModal} setVisible={() => setEditModal(false)} id={IdEdit}/>
+
+
       <ConfirmModal
         go="Excluir"
         cancel="Cancelar"
@@ -66,9 +85,16 @@ export default function ReviewComponent(props: ReviewProps) {
         confirm={confirm}
       />
       <div className="flex flex-col items-center gap-4 pb-10">
-        {message && (
+        {error && (
+            <Alert
+            msg={error}
+            type="alert-error"
+          />
+        )}
+
+        {success && (
           <Alert
-            msg={message}
+            msg={success}
             type="alert-success"
           />
         )}
@@ -96,7 +122,9 @@ export default function ReviewComponent(props: ReviewProps) {
                   >
                     {trashIcon} Excluir
                   </p>
-                  <p className="flex items-center gap-2  cursor-pointer hover:scale-105 text-black">
+                  <p 
+                    onClick={() => editModal(review._id)}
+                    className="flex items-center gap-2  cursor-pointer hover:scale-105 text-black">
                     {editIcon} Editar
                   </p>
                 </ul>

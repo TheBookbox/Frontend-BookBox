@@ -1,15 +1,35 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
+import { reset as authReset } from "@/slices/authSlice";
+import { reset as reviewReset } from "@/slices/reviewSlice";
+
+
 type Alert = 'alert-error' | 'alert-warning' | 'alert-success' 
 
 interface AlertProps {
-    msg: string
+    msg: string | null
     type: Alert
 }
 
 export function Alert(props: AlertProps) {
+
+  const dispatch = useDispatch<AppDispatch>()
+
+  useEffect(()=>{
+      setTimeout(() => {
+          dispatch(authReset())
+          dispatch(reviewReset())
+      }, 2000);
+  },[props.msg])
+
+   
+
+
   return (
     <div
       role='alert'
-      className={`alert ${props.type} absolute top-5 left-5 w-full flex`}
+      className={`z-[100] alert ${props.type} fixed top-5 left-5 w-full flex`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

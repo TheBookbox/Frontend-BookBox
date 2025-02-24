@@ -1,4 +1,5 @@
 import { requestConfig, api } from "@/utils/config";
+import { ReviewEdit } from "@/utils/interfaces";
 
 const getAllReviews = async(token: string) => {
     const config = requestConfig('GET', null, token)
@@ -69,11 +70,46 @@ const deleteReview = async(id: string, token: string) => {
 
 }
 
+const editReview = async(data:ReviewEdit, id: string,  token: string) => {
+    const config = requestConfig('PUT', data, token)
+
+    try {
+        const res = await fetch(api + '/review/books/' + id, config)
+        .then(res => res.json())
+        .catch(err => err)
+
+        return res
+
+
+    } catch (error) {
+        console.error(error);
+        
+    }
+}
+
+const getReviewById = async(id: string, token: string) => {
+    const config = requestConfig('GET', null, token)
+
+    try {
+        const res = await fetch(api + '/review/' + id, config)
+        .then(res => res.json())
+        .catch(err => err)
+
+        return res
+
+    } catch (error) {
+        console.error(error);
+        
+    }
+}
+
 const reviewService = {
     getAllReviews,
     likeReview,
     getUserReviews,
-    deleteReview
+    getReviewById,
+    deleteReview,
+    editReview
 
 }
 

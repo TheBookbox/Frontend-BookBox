@@ -28,4 +28,10 @@ export interface Review {
 }
 
 
+export interface ReviewEdit {
+  _id: string | undefined;
+  text: string | undefined;
+  stars: number | undefined;
+}
+
 export type Methods = 'GET' | 'DELETE' | 'PUT' | 'POST'
