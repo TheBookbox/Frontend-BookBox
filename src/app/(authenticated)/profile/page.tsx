@@ -6,7 +6,7 @@ import { Loading } from "@/components/Loading";
 import { User } from "@/utils/interfaces";
 import ReviewComponent from "@/components/Review/Review";
 import { useEffect } from "react";
-import { getUserReview } from "@/slices/reviewSlice";
+import { getAllReviews, getUserReview } from "@/slices/reviewSlice";
 import { Line } from "@/components/Line";
 
 export default function Profile() {
@@ -20,6 +20,7 @@ export default function Profile() {
 
   const { reviews, loading } = useSelector((state: RootState) => state.review);
 
+
   useEffect(() => {
     if (profile?._id) {
       dispatch(getUserReview(profile._id));
@@ -31,7 +32,8 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center pt-16 gap-4 bg-white h-full">
+    <div className="flex flex-col items-center justify-center w-full pt-16 gap-4 bg-white h-full">
+
       <div className="flex justify-center items-center w-24 h-24 bg-azul-grad rounded-full">
         <p className="text-azul-clarinho text-2xl">
           {user.name && user.name[0]}
@@ -75,7 +77,7 @@ export default function Profile() {
 
       <Line/>
 
-      <div>
+      <div className="w-full">
         <ReviewComponent data={reviews} />
       </div>
     </div>

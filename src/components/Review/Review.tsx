@@ -14,20 +14,22 @@ import { Review, User } from "@/utils/interfaces";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
 import Link from "next/link";
-import { deleteReview, reset } from "@/slices/reviewSlice";
+import { deleteReview, getReviewById, likeReview, reset } from "@/slices/reviewSlice";
 import { Alert } from "../Alert";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditReviewModal } from "../EditReviewModal/EditReviewModal";
-import { setTimeout } from "timers";
 
 interface ReviewProps {
   data: any[];
 }
 
 export default function ReviewComponent(props: ReviewProps) {
+
   const [confirmModal, setConfirmModal] = useState<boolean>(false);
   const [selectReviewId, setSelectReviewId] = useState<string | null>(null);
+
+  
 
   const [EditModal, setEditModal] = useState<boolean>(false);
   const [IdEdit, setIdEdit] = useState<string | null>(null);
@@ -38,12 +40,10 @@ export default function ReviewComponent(props: ReviewProps) {
     (state: RootState) => state.user
   );
 
+
   const {error, success } = useSelector((state: RootState) => state.review);
 
-  async function handleDelete(id: string) {
-    setSelectReviewId(id);
-    setConfirmModal(true);
-  }
+  
 
   function confirm(value: boolean) {
     if (value && selectReviewId) {
@@ -55,13 +55,25 @@ export default function ReviewComponent(props: ReviewProps) {
   }
 
   function editModal(id: string){
-      setIdEdit(id)
 
-      setEditModal(true)
+    dispatch(getReviewById(id))
+
+    setIdEdit(id)
+
+    setEditModal(true)
+
 
   }
 
-
+  function handleDelete(id: string) {
+    setSelectReviewId(id);
+    setConfirmModal(true);
+  }
+  
+    function handleLike(id: string){
+      dispatch(likeReview(id));
+    }
+  
 
 
 
@@ -72,7 +84,7 @@ export default function ReviewComponent(props: ReviewProps) {
   return (
     <div className="w-full">
 
-      <EditReviewModal showModal={EditModal} setVisible={() => setEditModal(false)} id={IdEdit}/>
+      <EditReviewModal showModal={EditModal} setVisible={setEditModal} id={IdEdit}/>
 
 
       <ConfirmModal
@@ -108,7 +120,6 @@ export default function ReviewComponent(props: ReviewProps) {
                 <div
                   tabIndex={0}
                   role="button"
-                  className=""
                 >
                   {ReviewOptionsIcon}
                 </div>
@@ -124,7 +135,7 @@ export default function ReviewComponent(props: ReviewProps) {
                   </p>
                   <p 
                     onClick={() => editModal(review._id)}
-                    className="flex items-center gap-2  cursor-pointer hover:scale-105 text-black">
+                    className="flex items-center gap-2 cursor-pointer hover:scale-105 text-black">
                     {editIcon} Editar
                   </p>
                 </ul>
@@ -174,11 +185,14 @@ export default function ReviewComponent(props: ReviewProps) {
             </figure>
             <div className="flex items-center mt-10 gap-5">
               <div className="flex items-center text-xl gap-1">
-                {user._id && !review.likes.includes(user._id) ? (
-                  <p className="text-4xl cursor-pointer">{heartLike}</p>
-                ) : (
+
+                {user._id && review.likes.includes(user._id) ? (
                   <p className="text-4xl">{fullHeartLike}</p>
+                ) : (
+                  <p className="text-4xl cursor-pointer" onClick={()=>handleLike(review._id)}>{heartLike}</p>
                 )}
+
+
                 <p>{review.likes.length}</p>
               </div>
               <div className="flex items-center text-xl gap-1">

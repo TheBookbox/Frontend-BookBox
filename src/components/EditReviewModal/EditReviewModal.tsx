@@ -25,13 +25,6 @@ export function EditReviewModal(props: EditReviewModalProps) {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if(props.id){
-        dispatch(getReviewById(props.id));
-    }
-
-  }, [props.id]);
-
-  useEffect(() => {
     setStars(review?.stars);
     setText(review?.text);
   }, [review]);
@@ -53,9 +46,9 @@ export function EditReviewModal(props: EditReviewModalProps) {
 
   };
 
-  useEffect(()=>{
-    dispatch(reset())
-  },[dispatch])
+  // useEffect(()=>{
+  //   dispatch(reset())
+  // },[dispatch])
 
 
 
@@ -67,7 +60,7 @@ export function EditReviewModal(props: EditReviewModalProps) {
   return (
     <div className={`z-50 ${props.showModal ? 'fixed' : 'hidden'} w-full h-full`}>
 
-        <div onClick={() => props.setVisible(false)} className={`fixed z-40 w-full h-full top-0 bg-modalBg text-black border`}>
+        <div onClick={() => props.setVisible(false)}  className={`fixed z-40 w-full h-full top-0 bg-modalBg text-black border`}>
         </div>
           <div
             className="z-50 flex flex-col justify-evenly fixed bottom-0 bg-white w-full h-auto opacity-100 rounded-t-xl p-5 transition-all duration-150
@@ -88,16 +81,11 @@ export function EditReviewModal(props: EditReviewModalProps) {
                     min={0}
                     max={5}
                   />
-                  <textarea className="textarea textarea-bordered w-full max-w-xs" placeholder="Bio"></textarea>
-                  {/* <Input
-                    value={text}
-                    placeholder="Avaliação"
-                    type="text"
-                    onChange={setText}
-                  /> */}
+                  <textarea onChange={e => setText(e.target.value)} className="textarea textarea-bordered w-full max-w-xs" placeholder="Bio" value={text}></textarea>
+                 
                 </div>
                 <div className="flex justify-center gap-5 ">
-                  <div className="btn btn-error text-white">Cancelar</div>
+                  <div className="btn btn-error text-white" onClick={() => props.setVisible(false)} >Cancelar</div>
                   <div
                     onClick={handleEdit}
                     className="btn btn-success text-white"

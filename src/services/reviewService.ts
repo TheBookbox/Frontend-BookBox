@@ -18,23 +18,6 @@ const getAllReviews = async(token: string) => {
     }
 }
 
-const likeReview = async(id: string, token: string ) => {
-    const config = requestConfig('PUT', null, token)
-
-    try {
-
-        const res = await fetch(api + '/review/books/like/'+id, config)
-        .then(res => res.json())
-        .catch(e => e)
-
-        return res
-
-    } catch (error) {
-        console.error(error);
-        
-    }
-}
-
 const getUserReviews = async(userId: string, token: string) => {
     const config = requestConfig('GET', null, token)
 
@@ -94,6 +77,40 @@ const getReviewById = async(id: string, token: string) => {
         const res = await fetch(api + '/review/' + id, config)
         .then(res => res.json())
         .catch(err => err)
+
+        return res
+
+    } catch (error) {
+        console.error(error);
+        
+    }
+}
+
+const likeReview = async(id: string, token: string ) => {
+    const config = requestConfig('PUT', null, token)
+
+    try {
+
+        const res = await fetch(api + '/review/books/like/'+id, config)
+        .then(res => res.json())
+        .catch(e => e)
+
+        return res
+
+    } catch (error) {
+        console.error(error);
+        
+    }
+}
+
+const unlikeReview = async(id: string, token: string ) => {
+    const config = requestConfig('PUT', null, token)
+
+    try {
+
+        const res = await fetch(api + '/review/books/like/'+id, config)
+        .then(res => res.json())
+        .catch(e => e)
 
         return res
 

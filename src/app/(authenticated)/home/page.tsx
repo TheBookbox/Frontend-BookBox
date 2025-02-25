@@ -13,8 +13,6 @@ export default function Home() {
 
 
   const { reviews, loading } = useSelector((state: RootState) => state.review);
-  const { user } = useSelector((state: RootState) => state.user);
-  
 
   useEffect(() => {
     dispatch(getAllReviews());

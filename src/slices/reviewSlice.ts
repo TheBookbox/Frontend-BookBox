@@ -79,6 +79,18 @@ export const editReview = createAsyncThunk('review/edit', async(reviewData: Revi
     return data
 })
 
+export const likeReview = createAsyncThunk('review/like', async(id: string, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token
+
+    const data = await reviewService.likeReview(id, token)
+
+    if(data.erro){
+        return thunkAPI.rejectWithValue(data.erro[0])
+    }
+
+    return data
+})
+
 
 
 
@@ -100,6 +112,44 @@ const reviewSlice = createSlice({
 
     extraReducers: (builder) => {
         builder
+
+        .addCase(likeReview.rejected, (state, action) => {
+            
+            state.error = action.payload
+
+        })
+
+        .addCase(likeReview.pending, (state) => {
+            state.loading = true,
+            state.error = null,
+            state.success = null
+        })
+
+        .addCase(likeReview.fulfilled, (state, action) => {
+
+         
+            state.loading = false
+            state.error = null
+            state.success = ''
+
+            // if(state.review?.likes) {
+            //     state.review.likes.push(action.payload.userId)
+            // }
+
+            state.reviews = state.reviews.map(review => {
+               
+                if(review._id == action.payload.review._id){
+                    
+                    return {
+                        ...review,
+                        likes: [...review.likes, action.payload.id]
+                    }
+                   
+                }
+                
+                return review
+            })
+        })
 
         .addCase(getReviewById.pending, (state) => {
             state.loading = true,
@@ -199,33 +249,6 @@ const reviewSlice = createSlice({
         })
 
 
-
-
-        // .addCase(likeReview.fulfilled, (state, action) => {
-        //     state.loading = false
-        //     state.success = true
-        //     state.error = false
-
-        //     if(state.reviews.likes){
-        //         state.reviews.likes.push(action.payload.userId)
-        //     }
-
-        //     state.reviews.map(review => {
-        //         if(review._id === action.payload.reviewId){
-        //             return review.likes.push(action.payload.userId)
-        //         }
-
-        //         return review
-        //     })
-
-        //     state.message = action.payload.message
-        // })
-
-
-        // .addCase(likeReview.rejected, (state, action) => {
-        //     state.loading = false
-        //     state.
-        // })
     }
 })
 
