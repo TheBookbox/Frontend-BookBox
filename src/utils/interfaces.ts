@@ -8,6 +8,7 @@ export interface User{
 }
 
 export interface Comments {
+  userId: string
   userName: string;
   text: string;
 }

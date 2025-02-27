@@ -4,9 +4,20 @@ import userService from "@/services/userService";
 import { RootState } from "../../store";
 import { User } from "@/utils/interfaces";
 
-const initialState = {
+interface UserState {
+    user: User;
+    profile: User;
+    error: string;
+    success: boolean;
+    loading: boolean;
+    message: string | null;
+}
+
+
+const initialState: UserState = {
     user: {},
-    error: false,
+    profile: {},
+    error: '',
     success: false,
     loading: false,
     message: null
@@ -24,6 +35,17 @@ export const profile = createAsyncThunk<{user: any}, void, {state: RootState}>('
 
 })
 
+export const getUserById = createAsyncThunk('user/getUserById' , async(id: string, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token
+
+    const data = await userService.getUserById(id, token)
+    if(data.erro){
+        thunkAPI.rejectWithValue(data.erro[0])
+    }
+
+    return data
+})
+
 
 export const userSlice = createSlice({
     name: 'user',
@@ -36,16 +58,39 @@ export const userSlice = createSlice({
 
     extraReducers: (builder) => {
         builder
+        
+        .addCase(getUserById.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload as string
+            state.success = false
+            state.profile = {}
+    
+        })
+
+        .addCase(getUserById.fulfilled, (state, action) => {
+            state.loading = false
+            state.error = 'false'
+            state.success = true
+            state.profile = action.payload
+
+        })
+
+        .addCase(getUserById.pending, (state) => {
+            state.loading = true
+            state.error = ''
+            state.success = false
+        })
+
         .addCase(profile.pending, (state) => {
             state.loading = true
-            state.error = false
+            state.error = ''
         })
 
         .addCase(profile.fulfilled, (state, action) => {
             state.loading = false
-            state.error = false
+            state.error = ''
             state.success = true
-            state.user = action.payload
+            state.user = action.payload as User
         })
     }
 })

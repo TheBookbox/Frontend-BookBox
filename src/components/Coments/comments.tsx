@@ -5,6 +5,7 @@ import { Line } from "../Line";
 import { Input } from "../Input/Input";
 import { sendIcon } from "@/utils/icons";
 import { Comments } from "@/utils/interfaces";
+import Link from "next/link";
 
 interface ConfirmModal {
   showModal: boolean;
@@ -45,7 +46,9 @@ export function CommentsComponent(props: ConfirmModal) {
                       <div className="flex justify-center items-center bg-azul-medio w-10 h-10 rounded-full text-white">
                         {comment.userName[0]}
                       </div>
-                      <h1 className="font-semibold">{comment.userName}</h1>
+                      <Link href={`/profile/${comment.userId}`}>
+                          <h1 className="font-semibold">{comment.userName}</h1>
+                      </Link>
                     </div>
 
                     <h1 className="mt-2 pl-5">{comment.text}</h1>

@@ -29,26 +29,24 @@ interface ReviewProps {
 
 export default function ReviewComponent(props: ReviewProps) {
 
-  const [confirmModal, setConfirmModal] = useState<boolean>(false);
-  const [selectReviewId, setSelectReviewId] = useState<string | null>(null);
-
-  
-  const [EditModal, setEditModal] = useState<boolean>(false);
-  const [IdEdit, setIdEdit] = useState<string | null>(null);
-
-  const[commentModal, setCommentModal] = useState<boolean>(false)
-  const[comments, setComments] = useState<Comments>()
-  
-
   const dispatch = useDispatch<AppDispatch>();
 
   const { user }: { user: User } = useSelector(
     (state: RootState) => state.user
   );
 
-
   const {error, success } = useSelector((state: RootState) => state.review);
 
+  // Modais
+
+  const [confirmModal, setConfirmModal] = useState<boolean>(false);
+  const [selectReviewId, setSelectReviewId] = useState<string | null>(null);
+
+  const [EditModal, setEditModal] = useState<boolean>(false);
+  const [IdEdit, setIdEdit] = useState<string | null>(null);
+
+  const[commentModal, setCommentModal] = useState<boolean>(false)
+  const[comments, setComments] = useState<Comments>()
   
 
   function confirm(value: boolean) {
@@ -94,7 +92,7 @@ export default function ReviewComponent(props: ReviewProps) {
 
 
   if (props.data.length == 0)
-    return <p className="mb-10">Ainda não há publicações.</p>;
+    return <p className="text-center mb-10">Ainda não há publicações.</p>;
 
   return (
     <div className="w-full">
@@ -161,12 +159,15 @@ export default function ReviewComponent(props: ReviewProps) {
 
             <div className="card-body p-5 gap-5">
               <h2 className="flex card-title justify-between">
-                <span className="flex items-center gap-2">
-                  <span className="flex justify-center items-center text-xl bg-azul-medio w-10 h-10 rounded-full text-white">
-                    {review.userName[0]}
+
+                <Link href={`/profile/${review.userId}`}>
+                  <span className="flex items-center gap-2">
+                    <span className="flex justify-center items-center text-xl bg-azul-medio w-10 h-10 rounded-full text-white">
+                      {review.userName[0]}
+                    </span>
+                    {review.userName}
                   </span>
-                  {review.userName} 
-                </span> 
+                </Link>
 
                 <div className="text-end font-normal">
                   {new Date().setHours(0, 0, 0, 0) ===
