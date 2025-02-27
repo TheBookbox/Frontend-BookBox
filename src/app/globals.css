@@ -27,6 +27,8 @@
 }
 
 
-/* *{
-  border: .5px solid black;
+/* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
+/* * {
+  scrollbar-width: thin;
+  scrollbar-color: #093765 #CFD1CD;
 } */

@@ -10,15 +10,18 @@ import {
   star,
   trashIcon,
 } from "@/utils/icons";
-import { Review, User } from "@/utils/interfaces";
+
+
+import { Comments, Review, User } from "@/utils/interfaces";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
 import Link from "next/link";
-import { deleteReview, getReviewById, likeReview, reset } from "@/slices/reviewSlice";
+import { deleteReview, getReviewById, likeReview } from "@/slices/reviewSlice";
 import { Alert } from "../Alert";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { EditReviewModal } from "../EditReviewModal/EditReviewModal";
+import { CommentsComponent } from "../Coments/comments";
 
 interface ReviewProps {
   data: any[];
@@ -30,9 +33,12 @@ export default function ReviewComponent(props: ReviewProps) {
   const [selectReviewId, setSelectReviewId] = useState<string | null>(null);
 
   
-
   const [EditModal, setEditModal] = useState<boolean>(false);
   const [IdEdit, setIdEdit] = useState<string | null>(null);
+
+  const[commentModal, setCommentModal] = useState<boolean>(false)
+  const[comments, setComments] = useState<Comments>()
+  
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -73,6 +79,15 @@ export default function ReviewComponent(props: ReviewProps) {
     function handleLike(id: string){
       dispatch(likeReview(id));
     }
+
+
+    function showComments(comments: Comments){
+      setComments(comments)
+
+      setCommentModal(true)
+
+    }
+  
   
 
 
@@ -85,6 +100,8 @@ export default function ReviewComponent(props: ReviewProps) {
     <div className="w-full">
 
       <EditReviewModal showModal={EditModal} setVisible={setEditModal} id={IdEdit}/>
+
+      <CommentsComponent showModal={commentModal} setVisible={setCommentModal} comments={comments}/>
 
 
       <ConfirmModal
@@ -196,7 +213,7 @@ export default function ReviewComponent(props: ReviewProps) {
                 <p>{review.likes.length}</p>
               </div>
               <div className="flex items-center text-xl gap-1">
-                <p className="text-3xl cursor-pointer text-azul-medio">
+                <p onClick={() => showComments(review.comments)} className="text-3xl cursor-pointer text-azul-medio">
                   {commentIcon}
                 </p>
                 <p>{review.comments.length}</p>

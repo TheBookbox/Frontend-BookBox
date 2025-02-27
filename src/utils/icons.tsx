@@ -14,7 +14,11 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
 import { SlOptions } from "react-icons/sl";
 import { IoShareSocialOutline } from "react-icons/io5";
+import { IoSend } from "react-icons/io5";
 
+export const sendIcon = (
+    <IoSend />
+    )
 
 export const shareIcon = (
 <IoShareSocialOutline />
