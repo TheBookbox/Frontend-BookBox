@@ -46,7 +46,8 @@ export default function ReviewComponent(props: ReviewProps) {
   const [IdEdit, setIdEdit] = useState<string | null>(null);
 
   const[commentModal, setCommentModal] = useState<boolean>(false)
-  const[comments, setComments] = useState<Comments>()
+  const[comments, setComments] = useState<Comments[]>([])
+  const [idReview, setIdReview] = useState<string | null>(null);
   
 
   function confirm(value: boolean) {
@@ -79,8 +80,9 @@ export default function ReviewComponent(props: ReviewProps) {
     }
 
 
-    function showComments(comments: Comments){
+    function showComments(comments: Comments[], id: string){
       setComments(comments)
+      setIdReview(id)
 
       setCommentModal(true)
 
@@ -99,7 +101,7 @@ export default function ReviewComponent(props: ReviewProps) {
 
       <EditReviewModal showModal={EditModal} setVisible={setEditModal} id={IdEdit}/>
 
-      <CommentsComponent showModal={commentModal} setVisible={setCommentModal} comments={comments}/>
+      <CommentsComponent showModal={commentModal} setVisible={setCommentModal} comments={comments} idReview={idReview}/>
 
 
       <ConfirmModal
@@ -214,7 +216,7 @@ export default function ReviewComponent(props: ReviewProps) {
                 <p>{review.likes.length}</p>
               </div>
               <div className="flex items-center text-xl gap-1">
-                <p onClick={() => showComments(review.comments)} className="text-3xl cursor-pointer text-azul-medio">
+                <p onClick={() => showComments(review.comments, review._id)} className="text-3xl cursor-pointer text-azul-medio">
                   {commentIcon}
                 </p>
                 <p>{review.comments.length}</p>

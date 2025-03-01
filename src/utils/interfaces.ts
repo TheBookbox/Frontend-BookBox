@@ -11,6 +11,12 @@ export interface Comments {
   userId: string
   userName: string;
   text: string;
+  date: string
+}
+
+export interface CommentData {
+  idReview: string | null
+  text: string
 }
 
 export interface Review {

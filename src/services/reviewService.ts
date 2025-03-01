@@ -120,13 +120,30 @@ const unlikeReview = async(id: string, token: string ) => {
     }
 }
 
+const commentReview = async(data:string, id: string | null, token: string) => {
+    const config = requestConfig('PUT', data, token)
+
+    try {
+        const res = await fetch(api + '/review/books/comment/'+id, config)
+        .then(res => res.json())
+        .catch(e => e)
+
+        return res
+
+
+    } catch (error) {
+        console.error(error);
+        
+    }
+}
 const reviewService = {
     getAllReviews,
     likeReview,
     getUserReviews,
     getReviewById,
     deleteReview,
-    editReview
+    editReview,
+    commentReview
 
 }
 

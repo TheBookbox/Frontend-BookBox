@@ -18,9 +18,7 @@ export default function Home() {
 
   const router = useRouter()
 
-
   const {books: BestSeller = [], loading: BestSellerLoad} = useGoogleBooks('inauthor:Machado%de%Assis&langRestrict=pt&orderBy=relevance', 5) || {}
-
 
   const [checkingAuth, setCheckingAuth] = useState(true)
 
@@ -33,7 +31,7 @@ export default function Home() {
     } else {
       setCheckingAuth(false)
     }
-  }, [router])
+  }, [])
 
 
  

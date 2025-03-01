@@ -1,19 +1,49 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Line } from "../Line";
 import { Input } from "../Input/Input";
 import { sendIcon } from "@/utils/icons";
-import { Comments } from "@/utils/interfaces";
+import { CommentData, Comments } from "@/utils/interfaces";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
+import { commentReview } from "@/slices/reviewSlice";
 
 interface ConfirmModal {
+  idReview: string | null
   showModal: boolean;
   setVisible: (visible: boolean) => void;
   comments: Comments[] | undefined;
 }
 
 export function CommentsComponent(props: ConfirmModal) {
+
+  const dispatch = useDispatch<AppDispatch>()
+
+  const{reviews} = useSelector((state: RootState) => state.review)
+
+  const data = reviews.filter(review => review._id == props.idReview)
+
+  const comments = data && data.length > 0 ? data[0].comments : null
+  
+
+  const[commentText, setCommentText] = useState<string>('')
+
+  function handleComment(){
+    const commentData:CommentData = {
+        idReview: props.idReview,
+        text: commentText
+    }
+
+    dispatch(commentReview(commentData))
+
+    setCommentText('')
+  
+    
+  }
+
+
   return (
     <div
       className={`z-50 ${props.showModal ? "fixed" : "hidden"} w-full h-full`}
@@ -31,7 +61,7 @@ export function CommentsComponent(props: ConfirmModal) {
                     md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-1/2  md:max-w-[550px]"
       >
         <div className="bg-white w-full h-[420px] rounded-xl p-5 overflow-auto">
-          {props.comments?.length == 0 ? (
+          {comments?.length == 0 ? (
             <div className="flex justify-center items-center">
               <h1>Nenhum comentário nessa review.</h1>
             </div>
@@ -40,15 +70,22 @@ export function CommentsComponent(props: ConfirmModal) {
               <h1 className="text-center font-bold">Comentários</h1>
               <Line />
               <div className="flex flex-col mt-5">
-                {props.comments?.map((comment) => (
+                {comments?.map((comment) => (
                   <div className="mt-5">
-                    <div className="flex items-center gap-5">
-                      <div className="flex justify-center items-center bg-azul-medio w-10 h-10 rounded-full text-white">
+                    
+                    <div className="flex items-center">
+                      <div className="flex justify-center items-center bg-azul-medio w-14 h-14 rounded-full text-white ">
                         {comment.userName[0]}
                       </div>
-                      <Link href={`/profile/${comment.userId}`}>
-                          <h1 className="font-semibold">{comment.userName}</h1>
-                      </Link>
+
+                      <div className="flex justify-between w-full pl-4">
+                        <Link href={`/profile/${comment.userId}`}>
+                            <h1 className="font-semibold">{comment.userName}</h1>
+                        </Link>
+
+                        <h1 className="self-end">{new Date().toLocaleDateString("pt-BR") == comment.date ? 'Hoje' : comment.date}</h1>
+                        
+                      </div>
                     </div>
 
                     <h1 className="mt-2 pl-5">{comment.text}</h1>
@@ -61,10 +98,14 @@ export function CommentsComponent(props: ConfirmModal) {
 
         <div className="flex gap-5 justify-center items-center bottom-48 w-full h-[100px] bg-white rounded-t-xl md:rounded-xl">
           <Input
+            value={commentText}
             placeholder="Adicione um comentário"
             type="text"
+            onChange={setCommentText}
+            autoFocus
+            
           />
-          <span className="btn bg-black text-azul-primario">{sendIcon}</span>
+          <span onClick={handleComment} className="btn bg-black text-azul-primario">{sendIcon}</span>
         </div>
       </div>
     </div>

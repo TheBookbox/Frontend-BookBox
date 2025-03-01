@@ -11,7 +11,7 @@ import { useParams } from "next/navigation";
 export default function BookDetails() {
   const { id } = useParams();
 
-  const { book, loading } = useBook(id) || { book: [], loading: true };
+  const { book, loading } = useBook(id) || { book: [], loading: false };
 
   if (loading) {
     return <Loading />;
