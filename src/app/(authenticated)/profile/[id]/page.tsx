@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../store";
 import { Loading } from "@/components/Loading";
 import ReviewComponent from "@/components/Review/Review";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUserReview } from "@/slices/reviewSlice";
 import { Line } from "@/components/Line";
 import { useParams, useRouter } from "next/navigation";
@@ -24,17 +24,9 @@ export default function Profile() {
 
   }
   
-
   const { profile, loading: profileLoading } = useSelector((state: RootState) => state.user);
 
-  console.log(profile);
-  
-
   const { reviews, loading: reviewLoading } = useSelector((state: RootState) => state.review);
-
-  console.log('Following:', profile.following);
-  console.log('Auth User ID:', authUser?._id);
-  
 
   useEffect(()=>{
     if (typeof id === 'string') {
@@ -51,6 +43,8 @@ export default function Profile() {
   if (profileLoading) {
     return <Loading />;
   }
+
+
 
 
   return (
@@ -122,7 +116,7 @@ export default function Profile() {
         </div>
       ) : (
         <div className="w-full">
-        <ReviewComponent data={reviews} />
+        <ReviewComponent data={reviews}/>
       </div>
       )}
 

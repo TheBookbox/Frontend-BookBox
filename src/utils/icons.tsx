@@ -15,6 +15,11 @@ import { MdEdit } from "react-icons/md";
 import { SlOptions } from "react-icons/sl";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { IoSend } from "react-icons/io5";
+import { FaEye } from "react-icons/fa";
+
+export const eyeIcon = (
+    <FaEye/>
+)
 
 export const sendIcon = (
     <IoSend />

@@ -3,9 +3,9 @@
 import { Line } from "../Line";
 import { Input } from "../Input/Input";
 import { sendIcon } from "@/utils/icons";
-import { CommentData, Comments } from "@/utils/interfaces";
+import { CommentData, Comments, Review } from "@/utils/interfaces";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
 import { commentReview } from "@/slices/reviewSlice";
@@ -14,19 +14,12 @@ interface ConfirmModal {
   idReview: string | null
   showModal: boolean;
   setVisible: (visible: boolean) => void;
-  comments: Comments[] | undefined;
+  review: Review | undefined;
 }
 
 export function CommentsComponent(props: ConfirmModal) {
 
   const dispatch = useDispatch<AppDispatch>()
-
-  const{reviews} = useSelector((state: RootState) => state.review)
-
-  const data = reviews.filter(review => review._id == props.idReview)
-
-  const comments = data && data.length > 0 ? data[0].comments : null
-  
 
   const[commentText, setCommentText] = useState<string>('')
 
@@ -61,7 +54,7 @@ export function CommentsComponent(props: ConfirmModal) {
                     md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-1/2  md:max-w-[550px]"
       >
         <div className="bg-white w-full h-[420px] rounded-xl p-5 overflow-auto">
-          {comments?.length == 0 ? (
+          {props.review?.comments.length == 0 ? (
             <div className="flex justify-center items-center">
               <h1>Nenhum comentário nessa review.</h1>
             </div>
@@ -70,8 +63,9 @@ export function CommentsComponent(props: ConfirmModal) {
               <h1 className="text-center font-bold">Comentários</h1>
               <Line />
               <div className="flex flex-col mt-5">
-                {comments?.map((comment) => (
-                  <div className="mt-5">
+
+                {props.review?.comments && props.review.comments?.map((comment, i) => (
+                  <div key={i} className="mt-5">
                     
                     <div className="flex items-center">
                       <div className="flex justify-center items-center bg-azul-medio w-14 h-14 rounded-full text-white ">

@@ -78,7 +78,7 @@ export default function Profile() {
       <Line/>
 
       <div className="w-full">
-        <ReviewComponent data={reviews} />
+        <ReviewComponent data={reviews}/>
       </div>
     </div>
   );

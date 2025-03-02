@@ -11,12 +11,10 @@ import { ConfirmModal } from "@/components/ConfirmModal/ConfirmModal";
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
 
-
-  const { reviews, loading } = useSelector((state: RootState) => state.review);
+  const { reviews } = useSelector((state: RootState) => state.review);
 
   useEffect(() => {
     dispatch(getAllReviews());
-    
   }, []);
 
 

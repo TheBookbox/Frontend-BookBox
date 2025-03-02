@@ -174,9 +174,10 @@ const reviewSlice = createSlice({
             state.error = null
             state.success = ''
 
-            // if(state.review?.likes) {
-            //     state.review.likes.push(action.payload.userId)
-            // }
+            
+            if(state.review?._id == action.payload.review._id){
+                state.review?.likes.push(action.payload.id)
+            }
 
             state.reviews = state.reviews.map(review => {
                
