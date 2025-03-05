@@ -72,9 +72,11 @@ export default function ReviewComponent(props: ReviewProps) {
     dispatch(likeReview(id));
   }
 
+  const[data, setData] = useState<Review | undefined>()
   function showComments(data: Review, id: string) {
     setIdReview(id);
     setCommentModal(true);
+    setData(data)
   }
 
   const [isShareSupported, setIsShareSupported] = useState(false);
@@ -130,15 +132,15 @@ export default function ReviewComponent(props: ReviewProps) {
         {props.data.map((review: Review, i) => (
           <>
             <EditReviewModal
-              showModal={EditModal}
-              setVisible={setEditModal}
-              data={reviewEditModal}
+              showModal={EditModal || false}
+              setVisible={setEditModal || (() => {})}
+              data={reviewEditModal || null}
             />
 
             <CommentsComponent
-              showModal={commentModal}
+              showModal={commentModal || false}
               setVisible={setCommentModal}
-              review={review}
+              review={data}
               idReview={idReview}
             />
             <div className="flex card bg-white w-full shadow-xl font-serifDisplay text-black p-5 rounded-none max-w-[530px] h-auto">
@@ -205,10 +207,12 @@ export default function ReviewComponent(props: ReviewProps) {
                   <span className="text-yellow-600">{star}</span>
                   {review.stars}/5
                 </p>
-                <p className="flex font-sans gap-4 max-w-[300px] min-w-full">
-                  <span className="self-center">{reviewIcon}</span>
-                  {review.text}
-                </p>
+                <Link href={`/review/${review._id}`}>
+                  <p className="flex font-sans gap-4 max-w-[300px] min-w-full">
+                    <span className="self-center">{reviewIcon}</span>
+                    {review.text}
+                  </p>
+                </Link>
               </div>
               <figure>
                 <img

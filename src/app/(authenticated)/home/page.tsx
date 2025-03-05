@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { getAllReviews } from "@/slices/reviewSlice";
 
 import ReviewComponent from "@/components/Review/Review";
-import { ConfirmModal } from "@/components/ConfirmModal/ConfirmModal";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,7 +23,7 @@ export default function Home() {
       {reviews.length == 0 ? (
         <h2>Nenhuma review atualmente.</h2>
       ) : (
-        <ReviewComponent data={reviews}/>
+        <ReviewComponent data={reviews} />
       )}
     </div>
   );

@@ -5,7 +5,7 @@ import { Input } from "../Input/Input";
 import { sendIcon } from "@/utils/icons";
 import { CommentData, Comments, Review } from "@/utils/interfaces";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
 import { commentReview } from "@/slices/reviewSlice";
@@ -23,6 +23,7 @@ export function CommentsComponent(props: ConfirmModal) {
 
   const[commentText, setCommentText] = useState<string>('')
 
+
   function handleComment(){
     const commentData:CommentData = {
         idReview: props.idReview,
@@ -37,6 +38,7 @@ export function CommentsComponent(props: ConfirmModal) {
   }
 
 
+  
   return (
     <div
       className={`z-50 ${props.showModal ? "fixed" : "hidden"} w-full h-full`}
@@ -56,7 +58,7 @@ export function CommentsComponent(props: ConfirmModal) {
         <div className="bg-white w-full h-[420px] rounded-xl p-5 overflow-auto">
           {props.review?.comments.length == 0 ? (
             <div className="flex justify-center items-center">
-              <h1>Nenhum comentário nessa review.</h1>
+              <h1>Nenhum comentário nessa props.review.</h1>
             </div>
           ) : (
             <div>

@@ -20,9 +20,6 @@ export function EditReviewModal(props: EditReviewModalProps) {
   const [stars, setStars] = useState<number | undefined>();
   const [text, setText] = useState<string | undefined>();
 
-  console.log(props.data);
-  
-
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
