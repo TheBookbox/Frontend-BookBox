@@ -19,6 +19,12 @@ export interface CommentData {
   text: string
 }
 
+export interface ReviewInsert {
+  bookId: string,
+  stars: number,
+  text: string,
+}
+
 export interface Review {
     bookId: string,
     stars: number,

@@ -26,8 +26,8 @@ export default function Reviews() {
     }
     
     return (
-        <>
+        <div className="bg-white">
         {review && <ReviewComponent data={[review]}/> }
-        </>
+        </div>
     )
 }

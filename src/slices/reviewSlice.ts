@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import reviewService from "@/services/reviewService";
-import { CommentData, Comments, Review, ReviewEdit } from "@/utils/interfaces";
+import { CommentData, Comments, Review, ReviewEdit, ReviewInsert } from "@/utils/interfaces";
 import { act } from "react";
 
 interface ReviewState {
@@ -49,6 +49,22 @@ export const getReviewById = createAsyncThunk('review/getById', async(id: string
     }
 
     return data
+})
+
+
+export const insertReview = createAsyncThunk('/review/insert', async(data: ReviewInsert, thunkAPI) => {
+
+    const token = thunkAPI.getState().auth.user.token 
+
+    const res = await reviewService.insertReview(data, token)
+
+
+    if(res.erro){
+        return thunkAPI.rejectWithValue(res.erro[0])
+    }
+
+    return res
+    
 })
 
 export const deleteReview = createAsyncThunk('review/delete', async(id: string, thunkApi) => {
@@ -124,6 +140,25 @@ const reviewSlice = createSlice({
 
     extraReducers: (builder) => {
         builder
+
+        .addCase(insertReview.fulfilled, (state, action) => {
+            
+            state.loading = false
+            state.error = null
+            state.success = action.payload.message
+            state.reviews = [...state.reviews, action.payload]
+            
+        })
+
+        .addCase(insertReview.pending, (state) => {
+            state.loading = true,
+            state.error = null,
+            state.success = null
+        })
+
+        .addCase(insertReview.rejected, (state, action) => {
+            state.error = action.payload
+        })
 
         .addCase(commentReview.fulfilled, (state, action) => {
             

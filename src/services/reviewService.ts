@@ -1,5 +1,5 @@
 import { requestConfig, api } from "@/utils/config";
-import { ReviewEdit } from "@/utils/interfaces";
+import { Review, ReviewEdit, ReviewInsert } from "@/utils/interfaces";
 
 const getAllReviews = async(token: string) => {
     const config = requestConfig('GET', null, token)
@@ -28,6 +28,24 @@ const getUserReviews = async(userId: string, token: string) => {
 
         return res
 
+
+    } catch (error) {
+        console.error(error);
+        
+    }
+}
+
+const insertReview = async(data: ReviewInsert, token: string) => {
+    console.log('review service');
+    
+    const config = requestConfig('POST', data, token)
+
+    try {
+        const res = await fetch(api + '/review/',config)
+        .then(res => res.json())
+        .catch(err => err)
+
+        return res
 
     } catch (error) {
         console.error(error);
@@ -143,7 +161,8 @@ const reviewService = {
     getReviewById,
     deleteReview,
     editReview,
-    commentReview
+    commentReview,
+    insertReview
 
 }
 

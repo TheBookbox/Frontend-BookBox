@@ -43,7 +43,7 @@ export function Footer(){
 
 
             <div>
-                <p className="text-sm md:text-base">&#169; Bookbox | Feito com ❤️ <Link className="text-azul-primario font-semibold" href={'https://www.linkedin.com/in/fabricio-silva-246a12273'}>Fabricio Silva</Link></p>
+                <p className="text-sm md:text-base">&#169; Bookbox | Feito com ❤️ <Link className="text-azul-primario font-semibold" href={'https://www.linkedin.com/in/fabricio-silva-246a12273'} target="_blank">Fabricio Silva</Link></p>
             </div>
         </footer>
     )

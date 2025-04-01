@@ -1,109 +1,169 @@
-"use client";
+"use client"
 
-import { Line } from "../Line";
-import { Input } from "../Input/Input";
-import { sendIcon } from "@/utils/icons";
-import { CommentData, Comments, Review } from "@/utils/interfaces";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store";
-import { commentReview } from "@/slices/reviewSlice";
+import type React from "react"
+import type { CommentData, Review } from "@/utils/interfaces"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+import type { AppDispatch } from "../../../store"
+import { commentReview } from "@/slices/reviewSlice"
+import { Input } from "../Input/Input"
+import { MessageSquare, Send, X } from "lucide-react"
 
-interface ConfirmModal {
+interface CommentsModalProps {
   idReview: string | null
-  showModal: boolean;
-  setVisible: (visible: boolean) => void;
-  review: Review | undefined;
+  showModal: boolean
+  setVisible: (visible: boolean) => void
+  review: Review | undefined
 }
 
-export function CommentsComponent(props: ConfirmModal) {
-
+export function CommentsComponent(props: CommentsModalProps) {
   const dispatch = useDispatch<AppDispatch>()
+  const [commentText, setCommentText] = useState<string>("")
+  const [isAnimating, setIsAnimating] = useState(false)
 
-  const[commentText, setCommentText] = useState<string>('')
+  useEffect(() => {
+    if (props.showModal) {
+      setIsAnimating(true)
+      document.body.style.overflow = "hidden"
+    } else {
+      setTimeout(() => {
+        setIsAnimating(false)
+        document.body.style.overflow = ""
+      }, 300)
+    }
 
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [props.showModal])
 
-  function handleComment(){
-    const commentData:CommentData = {
-        idReview: props.idReview,
-        text: commentText
+  function handleComment() {
+    if (!commentText.trim()) return
+
+    const commentData: CommentData = {
+      idReview: props.idReview,
+      text: commentText,
     }
 
     dispatch(commentReview(commentData))
-
-    setCommentText('')
-  
-    
+    setCommentText("")
   }
 
+  function handleKeyPress(e: React.KeyboardEvent) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault()
+      handleComment()
+    }
+  }
 
-  
+  if (!isAnimating && !props.showModal) return null
+
   return (
     <div
-      className={`z-50 ${props.showModal ? "fixed" : "hidden"} w-full h-full`}
+      className={`fixed inset-0 z-50 ${props.showModal ? "opacity-100" : "opacity-0"} transition-opacity duration-300`}
     >
-      <div
-        onClick={() => props.setVisible(false)}
-        className={`${
-          props.showModal ? "fixed" : "hidden"
-        } z-10 w-full h-full top-0 bg-modalBg text-black`}
-      ></div>
+      {/* Backdrop */}
+      <div onClick={() => props.setVisible(false)} className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
 
+      {/* Modal */}
       <div
-        className="z-20 flex flex-col justify-evenly fixed bottom-0 w-full gap-5 opacity-100 rounded-t-xl transition-all duration-150
-        
-                    md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-1/2  md:max-w-[550px]"
+        className={`
+          fixed z-50 bg-white overflow-hidden
+          transition-all duration-300 ease-out
+          ${props.showModal ? "opacity-100 scale-100" : "opacity-0 scale-95"}
+          
+          /* Mobile positioning */
+          bottom-0 left-0 right-0 rounded-t-xl h-[80vh] max-h-[80vh]
+          
+          /* Desktop positioning */
+          md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 
+          md:w-full md:max-w-xl md:h-auto md:max-h-[90vh] md:rounded-xl
+        `}
       >
-        <div className="bg-white w-full h-[420px] rounded-xl p-5 overflow-auto">
-          {props.review?.comments.length == 0 ? (
-            <div className="flex justify-center items-center">
-              <h1>Nenhum comentário nessa props.review.</h1>
+        {/* Header */}
+        <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 border-b bg-white">
+          <h2 className="text-lg font-semibold text-gray-900">Comentários</h2>
+          <button
+            onClick={() => props.setVisible(false)}
+            className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+            aria-label="Fechar"
+          >
+            <X className="w-5 h-5 text-gray-500" />
+          </button>
+        </div>
+
+        {/* Comments list */}
+        <div className="flex-1 overflow-y-auto p-4 h-[calc(80vh-140px)] md:h-[60vh]">
+          {!props.review?.comments?.length ? (
+            <div className="flex flex-col items-center justify-center h-full text-gray-500 py-10">
+              <MessageSquare className="w-12 h-12 mb-3 opacity-50" />
+              <p className="text-center">Nenhum comentário nesta publicação.</p>
+              <p className="text-center text-sm mt-1">Seja o primeiro a comentar!</p>
             </div>
           ) : (
-            <div>
-              <h1 className="text-center font-bold">Comentários</h1>
-              <Line />
-              <div className="flex flex-col mt-5">
-
-                {props.review?.comments && props.review.comments?.map((comment, i) => (
-                  <div key={i} className="mt-5">
-                    
-                    <div className="flex items-center">
-                      <div className="flex justify-center items-center bg-azul-medio w-14 h-14 rounded-full text-white ">
+            <div className="space-y-6">
+              {props.review?.comments?.map((comment, i) => (
+                <div key={i} className="group">
+                  <div className="flex items-start gap-3">
+                    {/* User avatar */}
+                    <Link href={`/profile/${comment.userId}`}>
+                      <div className="flex-shrink-0 flex justify-center items-center bg-azul-medio w-10 h-10 rounded-full text-white shadow-sm group-hover:shadow-md transition-shadow">
                         {comment.userName[0]}
                       </div>
+                    </Link>
 
-                      <div className="flex justify-between w-full pl-4">
-                        <Link href={`/profile/${comment.userId}`}>
-                            <h1 className="font-semibold">{comment.userName}</h1>
+                    {/* Comment content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline justify-between gap-2 mb-1">
+                        <Link
+                          href={`/profile/${comment.userId}`}
+                          className="font-medium text-gray-900 hover:text-azul-medio transition-colors truncate"
+                        >
+                          {comment.userName}
                         </Link>
-
-                        <h1 className="self-end">{new Date().toLocaleDateString("pt-BR") == comment.date ? 'Hoje' : comment.date}</h1>
-                        
+                        <span className="text-xs text-gray-500 whitespace-nowrap">
+                          {new Date().toLocaleDateString("pt-BR") === comment.date ? "Hoje" : comment.date}
+                        </span>
                       </div>
+                      <p className="text-gray-700 break-words">{comment.text}</p>
                     </div>
-
-                    <h1 className="mt-2 pl-5">{comment.text}</h1>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
 
-        <div className="flex gap-5 justify-center items-center bottom-48 w-full h-[100px] bg-white rounded-t-xl md:rounded-xl">
-          <Input
-            value={commentText}
-            placeholder="Adicione um comentário"
-            type="text"
-            onChange={setCommentText}
-            autoFocus
-            
-          />
-          <span onClick={handleComment} className="btn bg-black text-azul-primario">{sendIcon}</span>
+        {/* Comment input */}
+        <div className="sticky bottom-0 border-t bg-white p-3">
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <Input
+                value={commentText}
+                placeholder="Adicione um comentário..."
+                type="text"
+                onChange={setCommentText}
+                onKeyDown={handleKeyPress}
+                autoFocus
+                className="w-full pr-10 py-3 rounded-full bg-gray-100 border-0 focus:ring-2 focus:ring-azul-medio"
+              />
+            </div>
+            <button
+              onClick={handleComment}
+              disabled={!commentText.trim()}
+              className={`p-3 rounded-full ${
+                commentText.trim() ? "bg-azul-medio text-white hover:bg-blue-700" : "bg-gray-200 text-gray-400"
+              } transition-colors`}
+              aria-label="Enviar comentário"
+            >
+              <Send className="w-5 h-5" />
+            </button>
+          </div>
         </div>
+        
       </div>
     </div>
-  );
+  )
 }
+
