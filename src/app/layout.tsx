@@ -22,12 +22,14 @@ export default function RootLayout({
       <html lang="pt-br">
         <head>
           <link rel="shortcut icon" href="/logo.png" type="image/png" />
+          <title>BookBox</title>
         </head>
         <body
           className={`antialiased`}
         >
            <Provider store={store}>
           <Navbar />
+          
           
 
          {children}

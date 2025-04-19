@@ -27,10 +27,6 @@ export default function Profile() {
     }
   }, []);
 
-  if (loading) {
-    return <Loading />;
-  }
-
   return (
     <div className="flex flex-col items-center justify-center w-full pt-16 gap-4 bg-white h-full">
 

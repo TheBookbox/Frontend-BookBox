@@ -8,10 +8,11 @@ export interface User{
 }
 
 export interface Comments {
-  userId: string
+  idReview: string;
   userName: string;
+  userId: string;
   text: string;
-  date: string
+  date: string;
 }
 
 export interface CommentData {

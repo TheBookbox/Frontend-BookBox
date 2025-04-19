@@ -11,6 +11,7 @@ interface InputProps {
   min?: number
   onKeyDown?: (e: React.KeyboardEvent) => void
   id?: string // Adicionada a propriedade id
+  disable?: boolean
 }
 
 export function Input(props: InputProps) {
@@ -28,6 +29,8 @@ return (
     max={props.max}
     min={props.min}
     onKeyDown={props.onKeyDown}
+
+    disabled={props.disable}
   />
 );
 }

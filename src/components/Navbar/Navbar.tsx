@@ -9,10 +9,19 @@ import { logout, reset } from "@/slices/authSlice";
 import { useRouter } from "next/navigation";
 import { User } from "@/utils/interfaces";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { Search, X } from "lucide-react";
+import { Input } from "../Input/Input";
 
 export function Navbar() {
+
+
+
   const [confirmModal, setConfirmModal] = useState<boolean>(false);
+
+  const[searchBox, setSearchBox] = useState<boolean>(false)
+  
+  const[query, setQuery] = useState<string>('')
 
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -52,6 +61,16 @@ export function Navbar() {
     }
   }
 
+  function searchBook(e: FormEvent<HTMLFormElement>){
+    e.preventDefault()
+    router.push(`/search/${query}`)
+
+    
+  } 
+
+
+
+
   if (loading) {
     return <p>Carregando...</p>;
   }
@@ -67,6 +86,22 @@ export function Navbar() {
           cancel="Cancelar"
           confirm={confirm}
         />
+
+      {/* Search container */}
+      <div className={`${searchBox ? 'relative' : 'hidden'}  w-full py-5 md:hidden`}>
+            <form className="flex justify-center items-center w-1/2 mx-auto" onSubmit={e => searchBook(e)}>
+                <Input 
+                type="text"
+                autoFocus
+                placeholder="Pesquise por livros"
+                value={query}
+                onChange={setQuery}
+                />
+                <Search className="relative -left-10"/>
+            </form>
+        </div>
+     {/* End Search container */}
+
       <div className="bg-white flex items-center justify-between w-full h-[105px] px-8 lg:justify-around md:h-[145px] select-none border-b">
         <Link href={user ? "/home" : "/"}>
           <span className="flex items-center gap-2">
@@ -91,7 +126,12 @@ export function Navbar() {
                 </Link>
               )
           )}
-          <li className={`${liClass} text-3xl`}>{SearchIcon}</li>
+         
+            <form onSubmit={(e) => searchBook(e)} className="flex items-center">
+              <Input type="text" onChange={setQuery} value={query}/>
+              <Search strokeWidth={4} size={30} className="relative -left-10 "/>
+            </form>
+          
           {profile && (
             <div className="flex items-center gap-5">
               <Link href={"/me"}>
@@ -109,7 +149,10 @@ export function Navbar() {
           )}
         </ul>
         <ul className={`flex items-center gap-3 md:hidden text-azul-primario`}>
-          <li className={`${liClass} text-2xl`}>{SearchIcon}</li>
+
+          <li onClick={() => setSearchBox(!searchBox)} className={`${liClass} text-2xl`}>{searchBox ? <X className="text-red-500"/> : <Search strokeWidth={3} />}</li>
+
+          
           <div className="dropdown">
             <div
               tabIndex={0}

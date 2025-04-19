@@ -16,6 +16,7 @@ import { SlOptions } from "react-icons/sl";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { IoSend } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
+import { VscLoading } from "react-icons/vsc";
 
 export const eyeIcon = (
     <FaEye/>
@@ -96,4 +97,8 @@ export const linkBook = (
 
 export const returnIcon = (
     <GrReturn />
+)
+
+export const loadingIcon = (
+    <VscLoading />   
 )

@@ -1,26 +1,30 @@
 "use client"
 
 import type React from "react"
-import type { CommentData, Review } from "@/utils/interfaces"
+import type { CommentData, Comments, Review } from "@/utils/interfaces"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
-import type { AppDispatch } from "../../../store"
-import { commentReview } from "@/slices/reviewSlice"
+import { useDispatch, useSelector } from "react-redux"
+import type { AppDispatch, RootState } from "../../../store"
+import { commentReview, getCommentsByIdReview } from "@/slices/reviewSlice"
 import { Input } from "../Input/Input"
-import { MessageSquare, Send, X } from "lucide-react"
+import { LoaderCircle, MessageSquare, Send, X } from "lucide-react"
 
 interface CommentsModalProps {
   idReview: string | null
   showModal: boolean
   setVisible: (visible: boolean) => void
-  review: Review | undefined
+  comments: Comments[]
 }
 
 export function CommentsComponent(props: CommentsModalProps) {
-  const dispatch = useDispatch<AppDispatch>()
   const [commentText, setCommentText] = useState<string>("")
   const [isAnimating, setIsAnimating] = useState(false)
+
+  const { comments, commentLoading, error } = useSelector((state: RootState) => state.review)
+  
+  const dispatch = useDispatch<AppDispatch>()
+
 
   useEffect(() => {
     if (props.showModal) {
@@ -56,6 +60,13 @@ export function CommentsComponent(props: CommentsModalProps) {
       handleComment()
     }
   }
+
+  useEffect(()=>{
+    dispatch(getCommentsByIdReview(props.idReview as string))
+    
+  },[props.showModal])
+
+
 
   if (!isAnimating && !props.showModal) return null
 
@@ -94,16 +105,22 @@ export function CommentsComponent(props: CommentsModalProps) {
         </div>
 
         {/* Comments list */}
-        <div className="flex-1 overflow-y-auto p-4 h-[calc(80vh-140px)] md:h-[60vh]">
-          {!props.review?.comments?.length ? (
+        {commentLoading ? (
+          <div className="flex justify-center items-center w-full py-10"> 
+           <LoaderCircle className="animate-spin"/>
+
+          </div>
+        ): (
+          <div className="flex-1 overflow-y-auto p-4 h-[calc(80vh-140px)] md:h-[60vh]">
+          {!comments?.length ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-500 py-10">
               <MessageSquare className="w-12 h-12 mb-3 opacity-50" />
               <p className="text-center">Nenhum comentário nesta publicação.</p>
               <p className="text-center text-sm mt-1">Seja o primeiro a comentar!</p>
             </div>
           ) : (
-            <div className="space-y-6">
-              {props.review?.comments?.map((comment, i) => (
+            <div className="space-y-6 ">
+              {comments?.map((comment, i) => (
                 <div key={i} className="group">
                   <div className="flex items-start gap-3">
                     {/* User avatar */}
@@ -134,18 +151,21 @@ export function CommentsComponent(props: CommentsModalProps) {
             </div>
           )}
         </div>
+        )}
+
+       
 
         {/* Comment input */}
         <div className="sticky bottom-0 border-t bg-white p-3">
           <div className="flex items-center gap-2">
             <div className="relative flex-1">
               <Input
+                disable={commentLoading ? true : false}
                 value={commentText}
                 placeholder="Adicione um comentário..."
                 type="text"
                 onChange={setCommentText}
                 onKeyDown={handleKeyPress}
-                autoFocus
                 className="w-full pr-10 py-3 rounded-full bg-gray-100 border-0 focus:ring-2 focus:ring-azul-medio"
               />
             </div>

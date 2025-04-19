@@ -120,7 +120,7 @@ export default function ReviewComponent(props: ReviewProps) {
 
       <EditReviewModal showModal={EditModal} setVisible={setEditModal} data={reviewEditModal || null} />
 
-      <CommentsComponent showModal={commentModal} setVisible={setCommentModal} review={data} idReview={idReview} />
+      <CommentsComponent showModal={commentModal} setVisible={setCommentModal} idReview={idReview} />
 
       {success && <Alert msg={success} type="alert-success" />}
 

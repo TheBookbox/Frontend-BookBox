@@ -11,6 +11,9 @@ interface ReviewState {
     success: string | null;
     loading: boolean;
     message: string | null;
+
+    commentLoading: boolean
+    comments: Comments[] | null
 }
 
 const initialState: ReviewState = {
@@ -19,7 +22,10 @@ const initialState: ReviewState = {
     error: null, 
     success: null,
     loading: false,
-    message: null
+    message: null,
+
+    commentLoading: false,
+    comments: null
 }
 
 export const getAllReviews = createAsyncThunk<Review[], void, {state: RootState}>('review/getAll', async(_,thunkAPI) => {
@@ -121,6 +127,19 @@ export const commentReview = createAsyncThunk('rview/comment', async(commentData
     
 })
 
+export const getCommentsByIdReview = createAsyncThunk('review/getComments', async(idReview: string, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token
+
+    const data = await reviewService.getCommentsByIdReview(idReview, token)
+
+    if(data.error){
+        return thunkAPI.rejectWithValue(data.error[0])
+    }
+
+    return data
+
+})
+
 
 
 
@@ -140,6 +159,27 @@ const reviewSlice = createSlice({
 
     extraReducers: (builder) => {
         builder
+
+        .addCase(getCommentsByIdReview.pending, (state, action)=>{
+            state.commentLoading = true
+            state.error = null
+            state.comments = null
+            state.success = null
+        })
+
+        .addCase(getCommentsByIdReview.fulfilled, (state, action)=>{
+            state.commentLoading = false
+            state.error = null
+            state.comments = action.payload
+            state.success = null
+        })
+
+        .addCase(getCommentsByIdReview.rejected, (state, action)=>{
+            state.commentLoading = false
+            state.error = action.payload
+            state.comments = null
+            state.success = null
+        })
 
         .addCase(insertReview.fulfilled, (state, action) => {
             
@@ -165,16 +205,9 @@ const reviewSlice = createSlice({
             state.loading = false
             state.error = null
             state.success = action.payload.message
+            
+            state.comments?.unshift(action.payload.data)
 
-            state.reviews = state.reviews.map(review => {
-                if (review._id === action.payload.data.idReview) {
-                    return {
-                        ...review,
-                        comments: [action.payload.data, ...(review.comments || [])]
-                    }
-                }
-                return review
-            })
 
 
             

@@ -154,6 +154,24 @@ const commentReview = async(data:string, id: string | null, token: string) => {
         
     }
 }
+
+
+const getCommentsByIdReview = async(idReview: string, token: string) => {
+    const config = requestConfig('GET', null, token)
+
+    try {
+        const res = await fetch(api + '/review/comment/' + idReview, config)
+        .then(res => res.json())
+        .catch(e => e)
+
+        return res
+
+    } catch (error) {
+        console.error(error);
+        
+    }
+}
+
 const reviewService = {
     getAllReviews,
     likeReview,
@@ -162,7 +180,8 @@ const reviewService = {
     deleteReview,
     editReview,
     commentReview,
-    insertReview
+    insertReview,
+    getCommentsByIdReview
 
 }
 

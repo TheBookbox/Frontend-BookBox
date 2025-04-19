@@ -9,6 +9,7 @@ import { BookOpen, TrendingUp } from "lucide-react"
 
 export default function PopularBooks() {
   const { books: BestSeller = [], loading: BestSellerLoad } = useGoogleBooks("best%20sellers", 5) || {}
+  
   const { books: BrazilBestSeller = [], loading: BrazilBestSellerLoad } =
     useGoogleBooks("inauthor:Machado%de%Assis&langRestrict=pt&orderBy=relevance", 5) || {}
 
