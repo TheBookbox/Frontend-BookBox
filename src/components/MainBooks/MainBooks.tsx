@@ -33,13 +33,13 @@ export function MainBooks(props: MainBooksProps) {
           {props.icon && <span className="text-azul-primario">{props.icon}</span>}
           <h2 className="text-azul-clarinho font-bold text-xl md:text-2xl">{props.title}</h2>
         </div>
-        <Link
+        {/* <Link
           href={props.linkMore}
           className="flex items-center gap-1 text-azul-primario hover:text-azul-clarinho transition-colors text-sm font-medium"
         >
           Ver mais
           <ArrowRight className="w-4 h-4" />
-        </Link>
+        </Link> */}
       </div>
 
       {/* Books Grid */}
