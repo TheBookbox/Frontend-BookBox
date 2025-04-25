@@ -172,6 +172,9 @@ const getCommentsByIdReview = async(idReview: string, token: string) => {
     }
 }
 
+
+
+
 const reviewService = {
     getAllReviews,
     likeReview,
@@ -181,7 +184,8 @@ const reviewService = {
     editReview,
     commentReview,
     insertReview,
-    getCommentsByIdReview
+    getCommentsByIdReview,
+    
 
 }
 

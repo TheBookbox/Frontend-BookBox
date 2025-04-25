@@ -3,6 +3,7 @@ import { RootState } from "../../store";
 import reviewService from "@/services/reviewService";
 import { CommentData, Comments, Review, ReviewEdit, ReviewInsert } from "@/utils/interfaces";
 import { act } from "react";
+import { create } from "domain";
 
 interface ReviewState {
     review: Review | null
@@ -139,6 +140,7 @@ export const getCommentsByIdReview = createAsyncThunk('review/getComments', asyn
     return data
 
 })
+
 
 
 

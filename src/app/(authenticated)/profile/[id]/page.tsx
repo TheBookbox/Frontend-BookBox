@@ -8,31 +8,37 @@ import { useEffect, useState } from "react";
 import { getUserReview } from "@/slices/reviewSlice";
 import { Line } from "@/components/Line";
 import { useParams, useRouter } from "next/navigation";
-import { getUserById } from "@/slices/userSlice";
+import { followSomeone, getUserById } from "@/slices/userSlice";
 import { Comments } from "@/utils/interfaces";
+import { LoaderCircle } from "lucide-react";
 
 export default function Profile() {
   const { id } = useParams();
-  const router = useRouter()
-  
+  const router = useRouter();
+
   const dispatch = useDispatch<AppDispatch>();
 
   const { user: authUser } = useSelector((state: RootState) => state.auth);
 
-  if(id === authUser?._id){
-    router.push('/me')
-
+  if (id === authUser?._id) {
+    router.push("/me");
   }
-  
-  const { profile, loading: profileLoading } = useSelector((state: RootState) => state.user);
 
-  const { reviews, loading: reviewLoading } = useSelector((state: RootState) => state.review);
+  const {
+    profile,
+    loading: profileLoading,
+    followLoading,
+  } = useSelector((state: RootState) => state.user);
 
-  useEffect(()=>{
-    if (typeof id === 'string') {
+  const { reviews, loading: reviewLoading } = useSelector(
+    (state: RootState) => state.review
+  );
+
+  useEffect(() => {
+    if (typeof id === "string") {
       dispatch(getUserById(id));
-    } 
-  },[id])
+    }
+  }, [id]);
 
   useEffect(() => {
     if (profile?._id) {
@@ -40,18 +46,25 @@ export default function Profile() {
     }
   }, [profile]);
 
-  if (profileLoading) {
-    return <Loading />;
+  const[isFollowing, setIsFollowing] = useState(false)
+
+  function handleFollow(id: string){
+    dispatch(followSomeone(id)).then(() => {
+      dispatch(getUserById(id)); // Atualiza o estado completo com os dados mais recentes
+    })
   }
+  
 
 
-
+  // if (profileLoading) {
+  //   return <Loading />;
+  // }
 
   return (
     <div className="flex flex-col items-center justify-center w-full pt-16 gap-4 bg-white h-full">
-
-        {profile.following?.some((follow: Comments) => follow.userId === authUser?._id) && <p>Segue você</p>}
-
+      {profile.following?.some(
+        (follow: Comments) => follow.userId === authUser?._id
+      ) && <p>Segue você</p>}
 
       <div className="flex justify-center items-center w-24 h-24 bg-azul-grad rounded-full">
         <p className="text-azul-clarinho text-2xl">
@@ -60,18 +73,24 @@ export default function Profile() {
       </div>
 
       <div className="flex flex-col justify-center items-center gap-5">
-        <h1 className="font-serifDisplay font-bold text-black">{profile.name}</h1>
+        <h1 className="font-serifDisplay font-bold text-black">
+          {profile.name}
+        </h1>
 
-        <span className="border bg-azul-medio px-3 py-1 rounded-lg text-white cursor-pointer">
-
-        {profile.following?.some((follow: Comments) => follow.userId === authUser?._id) ? (
-           <span>Seguir</span>
-        ): (
-          <span className="">Seguindo</span>
+        {profile.followers?.some(
+          (follow: Comments) => follow.userId == authUser?._id
+        ) ? (
+          <span className="border bg-azul-medio px-3 py-1 rounded-lg text-white">
+            Seguindo
+          </span>
+        ) : (
+          <span
+            className="border border-azul-medio text-black px-3 py-1 rounded-lg cursor-pointer"
+            onClick={() => handleFollow(profile._id)}
+          >
+            Seguir
+          </span>
         )}
-
-
-        </span>
       </div>
 
       <div className="flex gap-5">
@@ -111,16 +130,12 @@ export default function Profile() {
       <Line />
 
       {reviewLoading ? (
-        <div className="flex justify-center items-center">
-            Carregando...
-        </div>
+        <div className="flex justify-center items-center">Carregando...</div>
       ) : (
         <div className="w-full">
-        <ReviewComponent data={reviews}/>
-      </div>
+          <ReviewComponent data={reviews} />
+        </div>
       )}
-
-      
     </div>
   );
 }
