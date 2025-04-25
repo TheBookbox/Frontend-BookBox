@@ -236,15 +236,22 @@ export default function ReviewComponent(props: ReviewProps) {
               {/* Interaction buttons */}
               <div className="flex items-center gap-6 mt-4 pt-4 border-t border-gray-100">
                 {/* Like button */}
-                <button
-                  onClick={() => handleLike(review._id)}
-                  className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors"
+                <div
+                 
+                  className="flex items-center gap-2 text-gray-600 "
                 >
-                  <span className="text-2xl">
-                    {user._id && review.likes.includes(user._id) ? fullHeartLike : heartLike}
-                  </span>
+                  {user._id && review.likes.includes(user._id) ?  (
+                    <span className="text-2xl">
+                      {fullHeartLike}
+                    </span>
+                  ): (
+                    <span className="text-2xl cursor-pointer hover:text-red-600" onClick={() => handleLike(review._id)}>
+                      {heartLike}
+                    </span>
+                  )}
+                  
                   <span className="text-sm font-medium">{review.likes.length}</span>
-                </button>
+                </div>
 
                 {/* Comment button */}
                 <button
