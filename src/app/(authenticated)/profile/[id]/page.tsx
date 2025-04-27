@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { getUserReview } from "@/slices/reviewSlice";
 import { Line } from "@/components/Line";
 import { useParams, useRouter } from "next/navigation";
-import { followSomeone, getUserById } from "@/slices/userSlice";
+import { followSomeone, getUserById, unfollowSomeone } from "@/slices/userSlice";
 import { Comments } from "@/utils/interfaces";
 import { LoaderCircle } from "lucide-react";
 
@@ -46,13 +46,20 @@ export default function Profile() {
     }
   }, [profile]);
 
-  const[isFollowing, setIsFollowing] = useState(false)
 
   function handleFollow(id: string){
     dispatch(followSomeone(id)).then(() => {
       dispatch(getUserById(id)); // Atualiza o estado completo com os dados mais recentes
     })
   }
+
+  function handleUnfollow(id: string){
+    dispatch(unfollowSomeone(id)).then(() => {
+      dispatch(getUserById(id)); // Atualiza o estado completo com os dados mais recentes
+    })
+  }
+
+ 
   
 
 
@@ -80,8 +87,8 @@ export default function Profile() {
         {profile.followers?.some(
           (follow: Comments) => follow.userId == authUser?._id
         ) ? (
-          <span className="border bg-azul-medio px-3 py-1 rounded-lg text-white">
-            Seguindo
+          <span className="border bg-azul-medio px-3 py-1 rounded-lg text-white cursor-pointer" onClick={()=>handleUnfollow(profile._id)}>
+            Deixar de Seguir
           </span>
         ) : (
           <span

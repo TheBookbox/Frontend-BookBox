@@ -62,6 +62,17 @@ export const followSomeone = createAsyncThunk('user/followSomeone', async(id: st
 })
 
 
+export const unfollowSomeone = createAsyncThunk('user/unfollowSomeone', async(id: string, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token
+
+    const data = await userService.unfollowSomeone(id, token)
+    if(data.error){
+        thunkAPI.rejectWithValue(data.error[0])
+    }
+
+    return data
+})
+
 
 export const userSlice = createSlice({
     name: 'user',
@@ -74,6 +85,27 @@ export const userSlice = createSlice({
 
     extraReducers: (builder) => {
         builder
+
+
+         .addCase(unfollowSomeone.pending, (state, action) => {
+            state.followLoading = true
+            state.error = ''
+            state.success = false
+        })
+
+        .addCase(unfollowSomeone.rejected, (state, action) => {
+            state.followLoading = false
+            state.error = action.payload as string
+            state.success = false
+        })
+
+        .addCase(unfollowSomeone.fulfilled, (state, action) => {
+            state.followLoading = false
+            state.error = ''
+            state.success = false
+
+            state.profile.followers = state.profile.followers?.filter(follow => follow.userId !== action.payload.userId)
+        })
 
         .addCase(followSomeone.pending, (state, action) => {
             state.followLoading = true

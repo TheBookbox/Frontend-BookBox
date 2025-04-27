@@ -52,10 +52,30 @@ const followSomeone = async(id: string, token: string) => {
 }
 
 
+const unfollowSomeone = async(id: string, token: string) => {
+    const config = requestConfig('PUT', null, token)
+
+    try {
+        const res = await fetch(api + '/users/unfollow/' + id, config)
+        .then(res => res.json())
+        .catch(e => e)
+
+        return res
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+
+
+
 const userService = {
     profile,
     getUserById,
-    followSomeone
+    followSomeone,
+    unfollowSomeone
 
 }
 
