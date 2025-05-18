@@ -2,11 +2,10 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../store";
-import { Loading } from "@/components/Loading";
 import { User } from "@/utils/interfaces";
 import ReviewComponent from "@/components/Review/Review";
 import { useEffect } from "react";
-import { getAllReviews, getUserReview } from "@/slices/reviewSlice";
+import { getUserReview } from "@/slices/reviewSlice";
 import { Line } from "@/components/Line";
 
 export default function Profile() {

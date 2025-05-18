@@ -34,12 +34,13 @@ export const register = createAsyncThunk('auth/register',
     async(user: User, thunkAPI)=>{
         const data = await authService.register(user)
 
-        // Check for errors
-        if(data.erro){
-            return thunkAPI.rejectWithValue(data.erro[0] as string)
+        if (!data || !data.erro) {
+            return data;
         }
+        
+        return thunkAPI.rejectWithValue(data.erro[0] as string);
 
-        return data
+       
     }
 )
 
@@ -48,6 +49,8 @@ export const login = createAsyncThunk('auth/login', async(user: User, thunkAPI) 
 
     // Check errors
     if(data.erro){
+      
+        
         return thunkAPI.rejectWithValue(data.erro[0] as string)
     }
 
@@ -86,9 +89,13 @@ export const authSlice = createSlice({
             state.user = action.payload
         })
         .addCase(register.rejected, (state, action) => {
+           
+           
             state.loading = false
             state.error = action.payload as string
             state.user = null
+            
+            
         })
         // FIM REGISTER
 
@@ -106,6 +113,9 @@ export const authSlice = createSlice({
             state.user = action.payload
         })
         .addCase(login.rejected, (state, action) => {
+           
+        
+            
             state.loading = false
             state.error = action.payload as string
             state.user = null

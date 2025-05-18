@@ -13,7 +13,11 @@ import { FormEvent, useState } from "react";
 import { Search, X } from "lucide-react";
 import { Input } from "../Input/Input";
 
-export function Navbar() {
+interface NavbarProps {
+  mode: 'without login' | 'login'
+}
+
+export function Navbar(props: NavbarProps) {
 
 
 
@@ -36,15 +40,21 @@ export function Navbar() {
 
   const navOpt = [
     { name: "POPULARES", link: "/popular/all" },
-    { name: "LIVROS", link: "" },
     { name: "CRIAR CONTA", link: "/register" },
     { name: "LOGIN", link: "/login" },
   ];
 
   if (profile) {
+    navOpt[1] = { name: "", link: "" };
     navOpt[2] = { name: "", link: "" };
-    navOpt[3] = { name: "", link: "" };
   }
+
+  if(props.mode === 'without login') {
+    navOpt[0] = {name: '', link: ''}
+  }
+
+
+ 
 
   const liClass =
     "cursor-pointer hover:text-azul-medio hover:bg-gray-300 p-2 rounded-lg";
@@ -88,18 +98,21 @@ export function Navbar() {
         />
 
       {/* Search container */}
-      <div className={`${searchBox ? 'relative' : 'hidden'}  w-full py-5 md:hidden`}>
-            <form className="flex justify-center items-center w-1/2 mx-auto" onSubmit={e => searchBook(e)}>
-                <Input 
-                type="text"
-                autoFocus
-                placeholder="Pesquise por livros"
-                value={query}
-                onChange={setQuery}
-                />
-                <Search className="relative -left-10"/>
-            </form>
-        </div>
+      {props.mode == 'login' && (
+         <div className={`${searchBox ? 'relative' : 'hidden'}  w-full py-5 md:hidden`}>
+         <form className="flex justify-center items-center w-1/2 mx-auto" onSubmit={e => searchBook(e)}>
+             <Input 
+             type="text"
+             autoFocus
+             placeholder="Pesquise por livros"
+             value={query}
+             onChange={setQuery}
+             />
+             <Search className="relative -left-10"/>
+         </form>
+     </div>
+      )}
+
      {/* End Search container */}
 
       <div className="bg-white flex items-center justify-between w-full h-[105px] px-8 lg:justify-around md:h-[145px] select-none border-b">
@@ -127,10 +140,13 @@ export function Navbar() {
               )
           )}
          
-            <form onSubmit={(e) => searchBook(e)} className="flex items-center">
-              <Input type="text" onChange={setQuery} value={query}/>
-              <Search strokeWidth={4} size={30} className="relative -left-10 "/>
-            </form>
+         {props.mode === 'login' && (
+          <form onSubmit={(e) => searchBook(e)} className="flex items-center">
+          <Input type="text" onChange={setQuery} value={query}/>
+          <Search strokeWidth={4} size={30} className="relative -left-10 "/>
+          </form>
+         )}
+            
           
           {profile && (
             <div className="flex items-center gap-5">
@@ -150,7 +166,7 @@ export function Navbar() {
         </ul>
         <ul className={`flex items-center gap-3 md:hidden text-azul-primario`}>
 
-          <li onClick={() => setSearchBox(!searchBox)} className={`${liClass} text-2xl`}>{searchBox ? <X className="text-red-500"/> : <Search strokeWidth={3} />}</li>
+         {props.mode === 'login' && <li onClick={() => setSearchBox(!searchBox)} className={`${liClass} text-2xl`}>{searchBox ? <X className="text-red-500"/> : <Search strokeWidth={3} />}</li>}
 
           
           <div className="dropdown">
@@ -165,6 +181,7 @@ export function Navbar() {
               tabIndex={0}
               className="dropdown-content menu rounded-box z-[1] w-52 shadow-2xl shadow-black flex flex-col gap-10 p-10 right-3 bg-white"
             >
+              
               {navOpt.map(
                 (opt, i) =>
                   opt.name && (

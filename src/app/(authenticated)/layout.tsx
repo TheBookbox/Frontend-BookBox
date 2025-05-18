@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../../../store"
 import { Loading } from "@/components/Loading"
 import { profile } from "@/slices/userSlice"
+import { Navbar } from "@/components/Navbar/Navbar"
 
 export default function layout({children}: {children:React.ReactNode}){
 
@@ -32,6 +33,7 @@ export default function layout({children}: {children:React.ReactNode}){
 
     return (
         <>
+        <Navbar mode="login"/>
             {!user && <Loading />}
             {children}
         </>

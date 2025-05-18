@@ -16,11 +16,7 @@ const register = async(data: User) => {
         console.log(res);
         
 
-        if(res){
-            if(res.erro){
-                return null;
-            }
-            
+        if(!res.erro){
             Cookies.set('user', JSON.stringify(res), {expires: 7})
         }
 

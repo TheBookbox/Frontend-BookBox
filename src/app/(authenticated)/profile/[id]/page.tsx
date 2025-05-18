@@ -136,13 +136,11 @@ export default function Profile() {
 
       <Line />
 
-      {reviewLoading ? (
-        <div className="flex justify-center items-center">Carregando...</div>
-      ) : (
+      
         <div className="w-full">
           <ReviewComponent data={reviews} />
         </div>
-      )}
+   
     </div>
   );
 }

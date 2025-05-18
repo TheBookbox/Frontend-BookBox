@@ -28,7 +28,7 @@ export default function RootLayout({
           className={`antialiased`}
         >
            <Provider store={store}>
-          <Navbar />
+          
           
           
 

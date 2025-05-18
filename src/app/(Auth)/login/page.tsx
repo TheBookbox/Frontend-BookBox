@@ -1,7 +1,6 @@
 'use client'
 
 import { Form } from "@/components/Form/Form";
-import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../store";
 import { User } from "@/utils/interfaces";
@@ -9,7 +8,7 @@ import { login, reset } from "@/slices/authSlice";
 import { useEffect } from "react";
 
 export default function Login(){
-    const router = useRouter()
+  
     const dispatch = useDispatch<AppDispatch>()
     
     const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {

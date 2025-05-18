@@ -10,7 +10,7 @@ import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { type FormEvent, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import type { AppDispatch, RootState } from "../../../../../store"
+import type { AppDispatch, RootState } from "../../../../store"
 import { insertReview } from "@/slices/reviewSlice"
 // import { Star } from "lucide-react"
 
@@ -25,6 +25,10 @@ export default function BookDetails() {
   const [text, setText] = useState<string>("")
   const { book, loading } = useBook(id) || { book: [], loading: false }
   const { loading: reviewLoading } = useSelector((state: RootState) => state.review)
+  const { user } = useSelector((state: RootState) => state.auth);
+
+
+ 
 
   function handleSendReview(e: FormEvent, idBook: string) {
     e.preventDefault()
@@ -55,17 +59,20 @@ export default function BookDetails() {
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
           {/* Mobile Navigation */}
           <div className="flex justify-between gap-4 mb-6 md:hidden">
-            <Link href="/home">
+            <Link href="/">
               <span className="inline-flex items-center px-4 py-2 rounded-md bg-orange-500 text-white font-medium text-sm shadow-sm hover:bg-orange-600 transition-colors">
                 {returnIcon} Voltar
               </span>
             </Link>
-            <button
+            {user && (
+              <button
               onClick={() => setMode("writting")}
               className="inline-flex items-center px-4 py-2 rounded-md bg-azul-medio text-azul-clarinho font-medium text-sm shadow-sm hover:bg-blue-700 transition-colors"
             >
               Avaliar {reviewIcon}
             </button>
+            )}
+            
           </div>
 
           {/* Book Details */}
@@ -100,17 +107,19 @@ export default function BookDetails() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex justify-between gap-4 my-8">
-            <Link href="/home">
+            <Link href="/">
               <span className="inline-flex items-center px-4 py-2 rounded-md bg-orange-500 text-white font-medium shadow-sm hover:bg-orange-600 transition-colors">
                 {returnIcon} Voltar
               </span>
             </Link>
-            <button
+          {user && (
+              <button
               onClick={() => setMode("writting")}
               className="inline-flex items-center px-4 py-2 rounded-md bg-azul-medio text-azul-clarinho font-medium shadow-sm hover:bg-blue-700 transition-colors"
             >
               Avaliar {reviewIcon}
             </button>
+          )}
           </div>
 
           <Line />

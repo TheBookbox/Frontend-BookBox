@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../store'
 import { Loading } from '@/components/Loading'
+import { Navbar } from '@/components/Navbar/Navbar'
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const { user } = useSelector((state: RootState) => state.auth)
@@ -35,7 +36,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     return <Loading />
   }
 
-  return <>{children}</>
+  return <>
+  <Navbar mode='without login'/>
+  {children}
+  </>
 }
 
 export default Layout
