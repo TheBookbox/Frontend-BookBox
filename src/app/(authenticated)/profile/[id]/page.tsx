@@ -2,15 +2,14 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../store";
-import { Loading } from "@/components/Loading";
 import ReviewComponent from "@/components/Review/Review";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getUserReview } from "@/slices/reviewSlice";
 import { Line } from "@/components/Line";
 import { useParams, useRouter } from "next/navigation";
 import { followSomeone, getUserById, unfollowSomeone } from "@/slices/userSlice";
 import { Comments } from "@/utils/interfaces";
-import { LoaderCircle } from "lucide-react";
+
 
 export default function Profile() {
   const { id } = useParams();
@@ -26,11 +25,9 @@ export default function Profile() {
 
   const {
     profile,
-    loading: profileLoading,
-    followLoading,
   } = useSelector((state: RootState) => state.user);
 
-  const { reviews, loading: reviewLoading } = useSelector(
+  const { reviews } = useSelector(
     (state: RootState) => state.review
   );
 
@@ -59,13 +56,7 @@ export default function Profile() {
     })
   }
 
- 
-  
 
-
-  // if (profileLoading) {
-  //   return <Loading />;
-  // }
 
   return (
     <div className="flex flex-col items-center justify-center w-full pt-16 gap-4 bg-white h-full">
@@ -85,15 +76,15 @@ export default function Profile() {
         </h1>
 
         {profile.followers?.some(
-          (follow: Comments) => follow.userId == authUser?._id
+          (follow: Comments) => follow.userId === authUser?._id
         ) ? (
-          <span className="border bg-azul-medio px-3 py-1 rounded-lg text-white cursor-pointer" onClick={()=>handleUnfollow(profile._id)}>
+          <span className="border bg-azul-medio px-3 py-1 rounded-lg text-white cursor-pointer" onClick={() => handleUnfollow(profile._id || '')}>
             Deixar de Seguir
           </span>
         ) : (
           <span
             className="border border-azul-medio text-black px-3 py-1 rounded-lg cursor-pointer"
-            onClick={() => handleFollow(profile._id)}
+            onClick={() => handleFollow(profile._id || '')}
           >
             Seguir
           </span>

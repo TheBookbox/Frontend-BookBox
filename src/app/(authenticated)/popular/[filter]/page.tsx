@@ -64,7 +64,7 @@ export default function PopularBooks() {
         <div className="mt-6">
           {/* Desktop: Show both sections */}
           <div className="hidden md:block">
-            <MainBooks data={BestSeller} title="Mais vendidos" linkMore="/" icon={<TrendingUp className="w-5 h-5" />} />
+            <MainBooks data={BestSeller} title="Mais vendidos" icon={<TrendingUp className="w-5 h-5" />} />
 
             <div className="my-12">
               <Line />
@@ -73,7 +73,7 @@ export default function PopularBooks() {
             <MainBooks
               data={BrazilBestSeller}
               title="Brasileiros famosos"
-              linkMore="/"
+              
               icon={<BookOpen className="w-5 h-5" />}
             />
           </div>
@@ -84,7 +84,7 @@ export default function PopularBooks() {
               <MainBooks
                 data={BestSeller}
                 title="Mais vendidos"
-                linkMore="/"
+                
                 icon={<TrendingUp className="w-5 h-5" />}
               />
             )}
@@ -93,7 +93,7 @@ export default function PopularBooks() {
               <MainBooks
                 data={BrazilBestSeller}
                 title="Brasileiros famosos"
-                linkMore="/"
+                
                 icon={<BookOpen className="w-5 h-5" />}
               />
             )}

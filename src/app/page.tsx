@@ -3,8 +3,6 @@ import { Hero } from "@/components/Hero/Hero";
 import { Line } from "@/components/Line";
 import { MainBooks } from "@/components/MainBooks/MainBooks";
 import { Cta } from "@/components/CTA/Cta";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/Loading";
 import { useGoogleBooks } from "@/hook/useGoogleBooks";
@@ -16,7 +14,6 @@ import PopularUsers from "@/components/PopularUsers/PopularUsers";
 import { Navbar } from "@/components/Navbar/Navbar";
 
 export default function Home() {
-  const { user, loading } = useSelector((state: RootState) => state.auth);
 
   const router = useRouter();
 
@@ -26,18 +23,22 @@ export default function Home() {
       6
     ) || {};
 
-  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [checkingAuth, setCheckingAuth] = useState(false);
 
   useEffect(() => {
     const cookies = Cookies.get("user");
     const userCookies = cookies ? JSON.parse(cookies) : null;
 
     if (userCookies) {
+      setCheckingAuth(true)
       router.push("/home");
     } else {
       setCheckingAuth(false);
     }
   }, []);
+
+
+  
 
   if ( BestSellerLoad || checkingAuth) {
     return <Loading />;

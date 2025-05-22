@@ -1,9 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../../store";
 import reviewService from "@/services/reviewService";
 import { CommentData, Comments, Review, ReviewEdit, ReviewInsert } from "@/utils/interfaces";
-import { act } from "react";
-import { create } from "domain";
+
 
 interface ReviewState {
     review: Review | null
@@ -12,7 +10,7 @@ interface ReviewState {
     success: string | null;
     loading: boolean;
     message: string | null;
-
+    hasMore: boolean
     commentLoading: boolean
     comments: Comments[] | null
 }
@@ -24,21 +22,21 @@ const initialState: ReviewState = {
     success: null,
     loading: false,
     message: null,
-
+    hasMore: true,
     commentLoading: false,
     comments: null
 }
 
-export const getAllReviews = createAsyncThunk<Review[], void, {state: RootState}>('review/getAll', async(_,thunkAPI) => {
+export const getAllReviews = createAsyncThunk('review/getAll', async(limit: number,thunkAPI: any) => {
 
     const token = thunkAPI.getState().auth.user.token
 
-    const data = await reviewService.getAllReviews(token)
+    const data = await reviewService.getAllReviews(limit,token)
 
     return data
 })
 
-export const getUserReview = createAsyncThunk('review/getUserReview', async(userId: string, thunkApi) => {
+export const getUserReview = createAsyncThunk('review/getUserReview', async(userId: string, thunkApi: any) => {
     const token = thunkApi.getState().auth.user.token
 
     const data = await reviewService.getUserReviews(userId, token)
@@ -46,7 +44,7 @@ export const getUserReview = createAsyncThunk('review/getUserReview', async(user
     return data
 })
 
-export const getReviewById = createAsyncThunk('review/getById', async(id: string, thunkAPI) => {
+export const getReviewById = createAsyncThunk('review/getById', async(id: string, thunkAPI: any) => {
     const token = thunkAPI.getState().auth.user.token
 
     const data = await reviewService.getReviewById(id, token)
@@ -59,7 +57,7 @@ export const getReviewById = createAsyncThunk('review/getById', async(id: string
 })
 
 
-export const insertReview = createAsyncThunk('/review/insert', async(data: ReviewInsert, thunkAPI) => {
+export const insertReview = createAsyncThunk('/review/insert', async(data: ReviewInsert, thunkAPI: any) => {
 
     const token = thunkAPI.getState().auth.user.token 
 
@@ -74,7 +72,7 @@ export const insertReview = createAsyncThunk('/review/insert', async(data: Revie
     
 })
 
-export const deleteReview = createAsyncThunk('review/delete', async(id: string, thunkApi) => {
+export const deleteReview = createAsyncThunk('review/delete', async(id: string, thunkApi: any) => {
     const token = thunkApi.getState().auth.user.token
 
     const data = await reviewService.deleteReview(id, token)
@@ -86,7 +84,7 @@ export const deleteReview = createAsyncThunk('review/delete', async(id: string, 
     return data
 })
 
-export const editReview = createAsyncThunk('review/edit', async(reviewData: ReviewEdit, thunkApi) => {
+export const editReview = createAsyncThunk('review/edit', async(reviewData: ReviewEdit, thunkApi: any) => {
     const token = thunkApi.getState().auth.user.token
 
     const data = await reviewService.editReview(
@@ -102,7 +100,7 @@ export const editReview = createAsyncThunk('review/edit', async(reviewData: Revi
     return data
 })
 
-export const likeReview = createAsyncThunk('review/like', async(id: string, thunkAPI) => {
+export const likeReview = createAsyncThunk('review/like', async(id: string, thunkAPI: any) => {
     const token = thunkAPI.getState().auth.user.token
 
     const data = await reviewService.likeReview(id, token)
@@ -114,7 +112,7 @@ export const likeReview = createAsyncThunk('review/like', async(id: string, thun
     return data
 })
 
-export const commentReview = createAsyncThunk('rview/comment', async(commentData: CommentData, thunkAPI) => {
+export const commentReview = createAsyncThunk('review/comment', async(commentData: CommentData, thunkAPI: any) => {
     const token = thunkAPI.getState().auth.user.token
 
     const data = await reviewService.commentReview({text: commentData.text}, commentData.idReview, token)
@@ -128,7 +126,7 @@ export const commentReview = createAsyncThunk('rview/comment', async(commentData
     
 })
 
-export const getCommentsByIdReview = createAsyncThunk('review/getComments', async(idReview: string, thunkAPI) => {
+export const getCommentsByIdReview = createAsyncThunk('review/getComments', async(idReview: string, thunkAPI: any) => {
     const token = thunkAPI.getState().auth.user.token
 
     const data = await reviewService.getCommentsByIdReview(idReview, token)
@@ -162,7 +160,7 @@ const reviewSlice = createSlice({
     extraReducers: (builder) => {
         builder
 
-        .addCase(getCommentsByIdReview.pending, (state, action)=>{
+        .addCase(getCommentsByIdReview.pending, (state)=>{
             state.commentLoading = true
             state.error = null
             state.comments = null
@@ -188,7 +186,7 @@ const reviewSlice = createSlice({
             state.loading = false
             state.error = null
             state.success = action.payload.message
-            state.reviews = [...state.reviews, action.payload]
+            state.reviews = [ action.payload, ...state.reviews]
             
         })
 
@@ -293,7 +291,9 @@ const reviewSlice = createSlice({
             state.loading = false
             state.error = null
             state.success = ''
-            state.reviews = action.payload
+            state.reviews = action.payload.data
+            state.hasMore = action.payload.hasMore
+            
         })
         
 

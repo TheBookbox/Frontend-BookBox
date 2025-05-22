@@ -20,13 +20,15 @@ export const useGoogleBooks = (query: string, maxResults = 10) => {
     const[loading, setLoading] = useState(false)
     const[error, setError] = useState<string | null>(null)
 
-    if(!query) return
+    
 
     useEffect(() => {
+      if(!query) return
     
         const fetchBooks = async () => {
           setLoading(true);
           setError(null);
+
     
           try {
             const response = await fetch(
@@ -46,7 +48,7 @@ export const useGoogleBooks = (query: string, maxResults = 10) => {
               setBooks([]);
             }
           } catch (err) {
-            setError("Erro ao buscar os livros.");
+            setError("Erro ao buscar os livros. " + err);
           } finally {
             setLoading(false);
           }
@@ -65,12 +67,13 @@ export const useBook = (id: string | string[] | undefined) => {
     const[book, setBook] = useState<any>([])
     const[error, setError] = useState<string | null>(null)
 
-    if(!id){
-      return
-    }
+ 
 
     
     useEffect(()=>{
+      if(!id) return
+
+      
       setLoading(true);
       setError(null);
 

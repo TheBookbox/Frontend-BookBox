@@ -123,7 +123,7 @@ export const authSlice = createSlice({
         // FIM LOGIN
 
         // LOGOUT
-        .addCase(logout.fulfilled, (state, action) => {
+        .addCase(logout.fulfilled, (state) => {
             state.loading = false
             state.success = false
             state.error = null

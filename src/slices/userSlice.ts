@@ -3,18 +3,24 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import userService from "@/services/userService";
 import { RootState } from "../../store";
 import { User } from "@/utils/interfaces";
-import { act } from "react";
 
-interface UserState {
+export interface Follower {
+    userId: string;
+    username?: string;
+    // outras propriedades conforme necessário
+  }
+  
+  export interface UserState {
     user: User;
-    profile: User;
-    error: string;
-    success: boolean;
-    loading: boolean;
-    followLoading: boolean;
-    message: string | null;
-}
-
+    profile: any
+    error: '',
+    success: boolean,
+    loading: boolean,
+    followLoading: boolean,
+    message: null
+    // outras propriedades do usuário...
+    followers?: Follower[];
+  }
 
 const initialState: UserState = {
     user: {},
@@ -29,7 +35,7 @@ const initialState: UserState = {
 
 
 
-export const profile = createAsyncThunk<{user: any}, void, {state: RootState}>('user/profile', async(_,thunkAPI) => {
+export const profile = createAsyncThunk<{user: any}, void, {state: RootState}>('user/profile', async(_,thunkAPI: any) => {
     const token = thunkAPI.getState().auth.user.token
 
     const data = await userService.profile(token)
@@ -38,7 +44,7 @@ export const profile = createAsyncThunk<{user: any}, void, {state: RootState}>('
 
 })
 
-export const getUserById = createAsyncThunk('user/getUserById' , async(id: string, thunkAPI) => {
+export const getUserById = createAsyncThunk('user/getUserById' , async(id: string, thunkAPI: any) => {
     const token = thunkAPI.getState().auth.user.token
 
     const data = await userService.getUserById(id, token)
@@ -50,7 +56,7 @@ export const getUserById = createAsyncThunk('user/getUserById' , async(id: strin
 })
 
 
-export const followSomeone = createAsyncThunk('user/followSomeone', async(id: string, thunkAPI) => {
+export const followSomeone = createAsyncThunk('user/followSomeone', async(id: string, thunkAPI: any) => {
     const token = thunkAPI.getState().auth.user.token
 
     const data = await userService.followSomeone(id, token)
@@ -62,7 +68,7 @@ export const followSomeone = createAsyncThunk('user/followSomeone', async(id: st
 })
 
 
-export const unfollowSomeone = createAsyncThunk('user/unfollowSomeone', async(id: string, thunkAPI) => {
+export const unfollowSomeone = createAsyncThunk('user/unfollowSomeone', async(id: string, thunkAPI: any) => {
     const token = thunkAPI.getState().auth.user.token
 
     const data = await userService.unfollowSomeone(id, token)
@@ -87,7 +93,7 @@ export const userSlice = createSlice({
         builder
 
 
-         .addCase(unfollowSomeone.pending, (state, action) => {
+         .addCase(unfollowSomeone.pending, (state) => {
             state.followLoading = true
             state.error = ''
             state.success = false
@@ -95,7 +101,7 @@ export const userSlice = createSlice({
 
         .addCase(unfollowSomeone.rejected, (state, action) => {
             state.followLoading = false
-            state.error = action.payload as string
+            state.error = action.payload as ''
             state.success = false
         })
 
@@ -104,10 +110,10 @@ export const userSlice = createSlice({
             state.error = ''
             state.success = false
 
-            state.profile.followers = state.profile.followers?.filter(follow => follow.userId !== action.payload.userId)
+            state.profile.followers = state.profile.followers?.filter((follow: Follower) => follow.userId !== action.payload.userId)
         })
 
-        .addCase(followSomeone.pending, (state, action) => {
+        .addCase(followSomeone.pending, (state) => {
             state.followLoading = true
             state.error = ''
             state.success = false
@@ -115,7 +121,7 @@ export const userSlice = createSlice({
 
         .addCase(followSomeone.rejected, (state, action) => {
             state.followLoading = false
-            state.error = action.payload as string
+            state.error = action.payload as ''
             state.success = false
         })
 
@@ -130,7 +136,7 @@ export const userSlice = createSlice({
         
         .addCase(getUserById.rejected, (state, action) => {
             state.loading = false
-            state.error = action.payload as string
+            state.error = action.payload as ''
             state.success = false
             state.profile = {}
     
@@ -138,7 +144,7 @@ export const userSlice = createSlice({
 
         .addCase(getUserById.fulfilled, (state, action) => {
             state.loading = false
-            state.error = 'false'
+            state.error = ''
             state.success = true
             state.profile = action.payload
 

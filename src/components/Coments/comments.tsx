@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import type { CommentData, Comments, Review } from "@/utils/interfaces"
+import type { CommentData} from "@/utils/interfaces"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -14,14 +14,14 @@ interface CommentsModalProps {
   idReview: string | null
   showModal: boolean
   setVisible: (visible: boolean) => void
-  comments: Comments[]
+ 
 }
 
 export function CommentsComponent(props: CommentsModalProps) {
   const [commentText, setCommentText] = useState<string>("")
   const [isAnimating, setIsAnimating] = useState(false)
 
-  const { comments, commentLoading, error } = useSelector((state: RootState) => state.review)
+  const { comments, commentLoading } = useSelector((state: RootState) => state.review)
   
   const dispatch = useDispatch<AppDispatch>()
 

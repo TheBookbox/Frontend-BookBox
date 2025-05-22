@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/utils/config";
-import { NotebookPen, NotebookPenIcon, TrendingUp, UserRound } from 'lucide-react';
+import { NotebookPenIcon, TrendingUp, UserRound } from 'lucide-react';
 import type { User } from "@/utils/interfaces";
 import { Line } from "../Line";
 

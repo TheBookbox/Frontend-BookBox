@@ -1,11 +1,11 @@
 import { requestConfig, api } from "@/utils/config";
-import { Review, ReviewEdit, ReviewInsert } from "@/utils/interfaces";
+import { ReviewEdit, ReviewInsert } from "@/utils/interfaces";
 
-const getAllReviews = async(token: string) => {
+const getAllReviews = async(limit: number, token: string) => {
     const config = requestConfig('GET', null, token)
 
     try {
-        const res = await fetch(api + '/review', config)
+        const res = await fetch(api + `/review?limit=${limit}`, config)
         .then(res => res.json())
         .catch(err => err)
 
@@ -71,7 +71,7 @@ const deleteReview = async(id: string, token: string) => {
 
 }
 
-const editReview = async(data:ReviewEdit, id: string,  token: string) => {
+const editReview = async(data:ReviewEdit, id: string | undefined,  token: string) => {
     const config = requestConfig('PUT', data, token)
 
     try {
@@ -121,24 +121,24 @@ const likeReview = async(id: string, token: string ) => {
     }
 }
 
-const unlikeReview = async(id: string, token: string ) => {
-    const config = requestConfig('PUT', null, token)
+// const unlikeReview = async(id: string, token: string ) => {
+//     const config = requestConfig('PUT', null, token)
 
-    try {
+//     try {
 
-        const res = await fetch(api + '/review/books/like/'+id, config)
-        .then(res => res.json())
-        .catch(e => e)
+//         const res = await fetch(api + '/review/books/like/'+id, config)
+//         .then(res => res.json())
+//         .catch(e => e)
 
-        return res
+//         return res
 
-    } catch (error) {
-        console.error(error);
+//     } catch (error) {
+//         console.error(error);
         
-    }
-}
+//     }
+// }
 
-const commentReview = async(data:string, id: string | null, token: string) => {
+const commentReview = async(data:any, id: string | null, token: string) => {
     const config = requestConfig('PUT', data, token)
 
     try {

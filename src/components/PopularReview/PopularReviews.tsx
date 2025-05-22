@@ -22,15 +22,14 @@ export default function PopularReview(props: PopularReviewsProps) {
         const response = await fetch(api + `/review/popular?limit=${limit ? limit : 5}`)
         const data = await response.json()
         setReviewsData(data)
+        setIsLoading(false)
       } catch (error) {
         console.error("Error fetching popular reviews:", error)
-      } finally {
-        setIsLoading(false)
       }
     }
 
     fetchData(props.limit)
-  }, [props.limit])
+  }, [])
 
   return (
     <div className="flex flex-col items-center gap-3 sm:gap-5 w-full px-2 sm:px-4">

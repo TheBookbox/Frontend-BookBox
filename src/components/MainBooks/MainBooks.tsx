@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, BookIcon } from "lucide-react"
+import {BookIcon } from "lucide-react"
 import type { ReactNode } from "react"
 
 export interface Book {

@@ -1,4 +1,4 @@
-import { Methods, User } from "./interfaces"
+import { Methods } from "./interfaces"
 
 export const api = process.env.NEXT_PUBLIC_API_URL
 

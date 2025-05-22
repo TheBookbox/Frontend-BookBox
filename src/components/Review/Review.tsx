@@ -35,7 +35,7 @@ export default function ReviewComponent(props: ReviewProps) {
 
   const { user }: { user: User } = useSelector((state: RootState) => state.user)
 
-  const { error, success } = useSelector((state: RootState) => state.review)
+  const { success } = useSelector((state: RootState) => state.review)
 
   // Modals
   const [confirmModal, setConfirmModal] = useState<boolean>(false)
@@ -46,7 +46,7 @@ export default function ReviewComponent(props: ReviewProps) {
 
   const [commentModal, setCommentModal] = useState<boolean>(false)
   const [idReview, setIdReview] = useState<string | null>(null)
-  const [data, setData] = useState<Review | undefined>()
+  const [, setData] = useState<Review | undefined>()
   const [isShareSupported, setIsShareSupported] = useState(false)
 
   useEffect(() => {

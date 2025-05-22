@@ -1,6 +1,6 @@
 "use client";
 
-import { navMenuIcon, SearchIcon } from "@/utils/icons";
+import { navMenuIcon } from "@/utils/icons";
 import Image from "next/image";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";

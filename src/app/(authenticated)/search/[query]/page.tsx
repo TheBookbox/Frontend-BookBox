@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { MainBooks } from "@/components/MainBooks/MainBooks";
 import { useGoogleBooks } from "@/hook/useGoogleBooks";
-import { LoaderCircle, Plus, SquareArrowDown, TrendingUp } from "lucide-react";
+import { LoaderCircle, Plus, TrendingUp } from "lucide-react";
 import { useParams } from "next/navigation";
 
 const Page = () => {
@@ -11,9 +11,8 @@ const Page = () => {
   const { query } = useParams();
   const queryTrim = decodeURIComponent(query as string)
 
-
   const [fetchLimit, setFetchLimit] = useState(5);
-  const { books = [], loading } = useGoogleBooks(query, fetchLimit) || {};
+  const { books = [], loading } = useGoogleBooks(queryTrim, fetchLimit) || {};
 
   const handleLoadMore = () => {
     setFetchLimit((prev) => prev + 5);
@@ -37,7 +36,6 @@ const Page = () => {
             <MainBooks
               data={books}
               title="Principais resultados"
-              linkMore="/"
               icon={<TrendingUp className="w-5 h-5" />}
             />
           </div>

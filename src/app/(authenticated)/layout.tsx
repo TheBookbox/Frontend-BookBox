@@ -8,7 +8,7 @@ import { Loading } from "@/components/Loading"
 import { profile } from "@/slices/userSlice"
 import { Navbar } from "@/components/Navbar/Navbar"
 
-export default function layout({children}: {children:React.ReactNode}){
+export default function Layout({children}: {children:React.ReactNode}){
 
     const dispatch = useDispatch<AppDispatch>()
 

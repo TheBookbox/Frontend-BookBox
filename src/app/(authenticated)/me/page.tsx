@@ -17,7 +17,7 @@ export default function Profile() {
 
   const { user: profile } = useSelector((state: RootState) => state.auth);
 
-  const { reviews, loading } = useSelector((state: RootState) => state.review);
+  const { reviews } = useSelector((state: RootState) => state.review);
 
 
   useEffect(() => {
