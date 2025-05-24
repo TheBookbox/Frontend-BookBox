@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
 import { reset as authReset } from "@/slices/authSlice";
 import { reset as reviewReset } from "@/slices/reviewSlice";
+import { resetMessage } from "@/slices/userSlice";
 
 
 type Alert = 'alert-error' | 'alert-warning' | 'alert-success' 
@@ -20,8 +21,9 @@ export function Alert(props: AlertProps) {
       setTimeout(() => {
           dispatch(authReset())
           dispatch(reviewReset())
+          dispatch(resetMessage())
       }, 2000);
-  },[props.msg])
+  },[])
 
    
 

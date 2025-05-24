@@ -7,15 +7,17 @@ import ReviewComponent from "@/components/Review/Review";
 import { useEffect } from "react";
 import { getUserReview } from "@/slices/reviewSlice";
 import { Line } from "@/components/Line";
+import Link from "next/link";
+import { Alert } from "@/components/Alert";
 
 export default function Profile() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { user }: { user: User } = useSelector(
+  const { user, EditSuccess }: { user: User, EditSuccess: boolean } = useSelector(
     (state: RootState) => state.user
   );
 
-  const { user: profile } = useSelector((state: RootState) => state.auth);
+  const { user: profile,  } = useSelector((state: RootState) => state.auth);
 
   const { reviews } = useSelector((state: RootState) => state.review);
 
@@ -28,9 +30,10 @@ export default function Profile() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full pt-16 gap-4 bg-white h-full">
+  
 
       <div className="flex justify-center items-center w-24 h-24 bg-azul-grad rounded-full">
-        <p className="text-azul-clarinho text-2xl">
+        <p className="text-azul-clarinho text-2xl uppercase">
           {user.name && user.name[0]}
         </p>
         
@@ -38,7 +41,7 @@ export default function Profile() {
 
       <div className="flex flex-col justify-center items-center gap-5">
         <h1 className="font-serifDisplay font-bold text-black">{user.name}</h1>
-        <span className="border bg-azul-medio px-3 py-1 rounded-lg text-white cursor-pointer">Editar perfil</span>
+        <Link href={'/editProfile'}><span className="border bg-azul-medio px-3 py-1 rounded-lg text-white cursor-pointer">Editar perfil</span></Link>
     </div>
         
 

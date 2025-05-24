@@ -1,4 +1,5 @@
 import { api, requestConfig } from "@/utils/config";
+import { config } from "process";
 
 
 const profile = async(token: string) => {
@@ -59,11 +60,31 @@ const unfollowSomeone = async(id: string, token: string) => {
         const res = await fetch(api + '/users/unfollow/' + id, config)
         .then(res => res.json())
         .catch(e => e)
-
+        console.log(res);
+        
         return res
 
     } catch (error) {
         console.log(error);
+        
+    }
+}
+
+const editProfile = async(name: string, token: string) => {
+    const data = {
+        name: name
+    }
+
+    const config = requestConfig('PUT', data, token)
+
+    try {
+        const res = await fetch(api + '/users/', config)
+        .then(res => res.json())
+        .catch(e => e)
+
+        return res
+    } catch (error) {
+        console.error(error);
         
     }
 }
@@ -75,7 +96,8 @@ const userService = {
     profile,
     getUserById,
     followSomeone,
-    unfollowSomeone
+    unfollowSomeone,
+    editProfile
 
 }
 

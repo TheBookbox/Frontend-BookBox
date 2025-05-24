@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import userService from "@/services/userService";
 import { RootState } from "../../store";
 import { User } from "@/utils/interfaces";
+import { act } from "react";
 
 export interface Follower {
     userId: string;
@@ -15,6 +16,7 @@ export interface Follower {
     profile: any
     error: '',
     success: boolean,
+    EditSuccess: boolean,
     loading: boolean,
     followLoading: boolean,
     message: null
@@ -27,6 +29,8 @@ const initialState: UserState = {
     profile: {},
     error: '',
     success: false,
+    EditSuccess: false,
+
     loading: false,
     followLoading: false,
     message: null
@@ -79,6 +83,19 @@ export const unfollowSomeone = createAsyncThunk('user/unfollowSomeone', async(id
     return data
 })
 
+export const editProfile = createAsyncThunk('user/editProfile', async(name: string, thunkAPI: any) => {
+
+    const token = thunkAPI.getState().auth.user.token
+
+    const data = await userService.editProfile(name, token)
+    if(data.erro){
+        thunkAPI.rejectWithValue(data.erro[0])
+    }
+
+
+    return data
+})
+
 
 export const userSlice = createSlice({
     name: 'user',
@@ -91,6 +108,31 @@ export const userSlice = createSlice({
 
     extraReducers: (builder) => {
         builder
+
+
+        .addCase(editProfile.pending, (state) => {
+            state.loading = true
+            state.EditSuccess = false
+            state.error = ''
+        })
+
+        .addCase(editProfile.rejected, (state, action) => {
+            state.loading = false
+            state.EditSuccess = false
+            state.error = action.payload as ''
+
+        })
+
+        .addCase(editProfile.fulfilled, (state, action) => {
+            
+
+            state.loading = false
+            state.EditSuccess = true
+            state.error = ''
+            state.user = action.payload
+        })
+
+        
 
 
          .addCase(unfollowSomeone.pending, (state) => {

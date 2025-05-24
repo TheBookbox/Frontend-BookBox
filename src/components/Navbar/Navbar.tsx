@@ -151,7 +151,7 @@ export function Navbar(props: NavbarProps) {
           {profile && (
             <div className="flex items-center gap-5">
               <Link href={"/me"}>
-                <div className="flex justify-center items-center w-10 h-10 bg-azul-medio rounded-full cursor-pointer text-white ">
+                <div className="flex justify-center items-center w-10 h-10 bg-azul-medio rounded-full cursor-pointer text-white uppercase">
                   {user.name && user.name[0]}
                 </div>
               </Link>
@@ -196,7 +196,7 @@ export function Navbar(props: NavbarProps) {
               {profile && (
                 <div className="flex justify-center items-center gap-3">
                   <Link href={"/me"}>
-                    <div className="flex justify-center items-center w-10 h-10 bg-azul-medio rounded-full cursor-pointer text-white ">
+                    <div className="flex justify-center items-center w-10 h-10 bg-azul-medio rounded-full cursor-pointer text-white uppercase ">
                       {user.name && user.name[0]}
                     </div>
                   </Link>
